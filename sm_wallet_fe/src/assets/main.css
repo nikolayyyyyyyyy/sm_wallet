@@ -1,6 +1,50 @@
 /* Base CSS */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+
+:root {
+  --font-weight-base: 300;
+  --ff-base: 'Geologica', sans-serif;
+
+  --c-white: #FFF;
+  --c-base: #6784C1;
+  --c-gray: #797979;
+  --c-blue: #1e96fc;
+  --c-red: #E40006;
+  --c-light-blue: #F0F3F9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-weight: var(--font-weight-base);
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 22px;
+}
+
+h2 {}
+
+h3 {}
 
 .shell {
   max-width: 1280px;
   margin: 0 auto;
+}
+
+body {
+  font-family: var(--ff-base);
+  background-color: var(--c-light-blue);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 15px;
+  border-radius: 5px;
+  width: 35%;
+  margin: 30px auto;
+  background-color: #e0e0e0;
 }
