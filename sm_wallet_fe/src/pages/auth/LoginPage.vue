@@ -3,7 +3,8 @@ import FormInput from '@/components/FormInput.vue';
 import Button from '@/components/Button.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import ErrorParagraph from '@/components/ErrorParagraph.vue';
+import FormErrorMessage from '@/components/FormErrorMessage.vue';
+import { auth } from '@/crud/auth';
 
 const router = useRouter();
 const loginData = ref({
@@ -13,33 +14,21 @@ const loginData = ref({
 
 const errors = ref([]);
 const invalidCredentials = ref('');
+const { authenticate } = auth();
 
-const logUser = async () => {
-    const request = await fetch('http://127.0.0.1:8000/api/login', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(loginData.value)
-    });
-
-    if (request.ok) {
-
-        const responseData = await request.json();
-        localStorage.setItem('token', responseData.token);
-        router.push('/home');
-        errors.value = [];
+const handleLogin = async () => {
+    try {
+        await authenticate(loginData.value, 'login');
         invalidCredentials.value = '';
-    } else {
-        const errorArr = await request.json();
-
-        if (errorArr.errors) {
-            errors.value = errorArr.errors;
+        errors.value = [];
+        router.push('/');
+    } catch (err) {
+        if (JSON.parse(err.message).errors) {
             invalidCredentials.value = '';
+            errors.value = JSON.parse(err.message).errors;
         } else {
-            invalidCredentials.value = errorArr.message;
             errors.value = [];
+            invalidCredentials.value = JSON.parse(err.message).message;
         }
     }
 };
@@ -50,7 +39,7 @@ const logUser = async () => {
         <div class="section__inner shell">
             <h1 class="section__title">Вход</h1>
 
-            <form @submit.prevent="logUser">
+            <form @submit.prevent="handleLogin">
                 <FormInput label="Имейл" v-model="loginData.email" :error="errors?.email?.[0]" />
 
                 <FormInput label="Парола" input-type="password" v-model="loginData.password"
@@ -58,7 +47,7 @@ const logUser = async () => {
 
                 <Button text="вход" />
 
-                <ErrorParagraph v-if="invalidCredentials" :text="invalidCredentials" />
+                <FormErrorMessage v-if="invalidCredentials" :text="invalidCredentials" />
             </form>
         </div>
     </section>

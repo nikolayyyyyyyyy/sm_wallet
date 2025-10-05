@@ -14,22 +14,26 @@ class AuthApiController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:30|min:3',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:3'
+            'name' => 'required|max:20|min:1',
+            'middle_name' => 'nullable|min:1|max:20',
+            'last_name' => 'nullable|min:1|max:20',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:3|max:100'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
         }
 
         $user = User::create([
             'name' => $request->input('name'),
+            'middle_name' => $request->input('middle_name'),
+            'last_name' => $request->input('last_name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
+            'role_id' => 1
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -43,7 +47,7 @@ class AuthApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|string|min:3'
+            'password' => 'required|min:3'
         ]);
 
         if ($validator->fails()) {

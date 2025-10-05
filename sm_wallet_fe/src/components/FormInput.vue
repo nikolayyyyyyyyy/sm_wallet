@@ -1,5 +1,5 @@
 <script setup>
-import ErrorParagraph from './ErrorParagraph.vue';
+import FormErrorMessage from './FormErrorMessage.vue';
 
 defineProps({
     label: {
@@ -13,6 +13,10 @@ defineProps({
     error: {
         String,
         required: false
+    },
+    isOptional: {
+        Boolean,
+        default: false
     }
 });
 
@@ -21,11 +25,14 @@ const model = defineModel();
 
 <template>
     <div class="form-input">
-        <label>{{ label }}</label>
+        <label>{{ label }}
+            <p class="required-green" v-if="isOptional">(не е задължително)<span>*</span></p>
+            <p class="required-red" v-else>(задължително)<span>*</span></p>
+        </label>
 
         <input :type="inputType" v-model="model">
 
-        <ErrorParagraph v-if="error" :text="error" />
+        <FormErrorMessage v-if="error" :text="error" />
     </div>
 </template>
 
@@ -39,6 +46,26 @@ const model = defineModel();
         border-radius: 3px;
         padding: 5px;
         border: 1px solid var(--c-gray);
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+
+        .required-green,
+        .required-red {
+            font-size: 12px;
+            color: var(--c-gray);
+        }
+
+        .required-red span {
+            color: var(--c-red);
+        }
+
+        .required-green span {
+            color: var(--c-green);
+        }
     }
 }
 </style>
