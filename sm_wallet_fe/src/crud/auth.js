@@ -36,9 +36,25 @@ const registerUser = async (registerData) => {
     }
 };
 
+const getUser = async () => {
+    const response = await fetch(`${baseUrl}/user`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+
+    if (response.ok) {
+        return await response.json();
+    }
+};
+
 export function auth() {
     return {
         loginUser,
-        registerUser
+        registerUser,
+        getUser
     }
 }
