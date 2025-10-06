@@ -14,11 +14,11 @@ const loginData = ref({
 
 const errors = ref([]);
 const invalidCredentials = ref('');
-const { authenticate } = auth();
+const { loginUser } = auth();
 
 const handleLogin = async () => {
     try {
-        await authenticate(loginData.value, 'login');
+        await loginUser(loginData.value, 'login');
         invalidCredentials.value = '';
         errors.value = [];
         router.push('/');
@@ -37,7 +37,8 @@ const handleLogin = async () => {
 <template>
     <section class="section-login">
         <div class="section__inner shell">
-            <h1 class="section__title">Вход</h1>
+            <h1 class="section__title">FinTech</h1>
+            <p class="subtitle">вход в системата</p>
 
             <form @submit.prevent="handleLogin">
                 <FormInput label="Имейл" v-model="loginData.email" :error="errors?.email?.[0]" />
@@ -56,9 +57,5 @@ const handleLogin = async () => {
 <style scoped lang="scss">
 .section-login {
     margin-block: 32px;
-
-    .section__title {
-        text-align: center;
-    }
 }
 </style>

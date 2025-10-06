@@ -19,6 +19,9 @@ class AuthApiController extends Controller
             'last_name' => 'nullable|min:1|max:20',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3|max:100'
+        ], [
+            'name.required' => 'полето е задължително',
+            'password.required' => 'полето е задължително'
         ]);
 
         if ($validator->fails()) {
@@ -27,7 +30,7 @@ class AuthApiController extends Controller
             ], 422);
         }
 
-        $user = User::create([
+        User::create([
             'name' => $request->input('name'),
             'middle_name' => $request->input('middle_name'),
             'last_name' => $request->input('last_name'),
@@ -36,11 +39,7 @@ class AuthApiController extends Controller
             'role_id' => 1
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'token' => $token,
-        ], 201);
+        return response()->json(status: 201);
     }
 
     public function login(Request $request)
@@ -48,6 +47,10 @@ class AuthApiController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:3'
+        ], [
+            'email.required' => 'полето е задължително',
+            'password.required' => 'полето е задължително',
+            'password.min' => 'полето трябва да има поне 3 букви'
         ]);
 
         if ($validator->fails()) {
@@ -61,7 +64,7 @@ class AuthApiController extends Controller
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response()->json([
                 'message' =>
-                    'Invalid credentials'
+                    'невалидно потребителско име или парола'
             ], 401);
         }
 

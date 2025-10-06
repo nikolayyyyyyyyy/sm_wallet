@@ -33,20 +33,22 @@ const logout = async () => {
 .nav {
   display: flex;
   gap: 15px;
-  background-color: #495867;
+  background-color: var(--c-grayed);
   padding: 15px 20px;
+  border-bottom: 1px solid #334155;
 
   .nav-item {
     padding: 5px;
     border-radius: 5px;
-    background-color: var(--c-base);
+    background-color: var(--c-purple);
     text-decoration: none;
     color: var(--c-white);
     font-family: var(--ff-base);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 
   .nav-item:hover {
-    background-color: var(--c-blue);
+    background-color: #6a29a6;
   }
 }
 </style>

@@ -7,18 +7,18 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const errors = ref(null);
-const registerUser = ref({
+const registerData = ref({
     name: '',
     middle_name: '',
     last_name: '',
     email: '',
     password: ''
 });
-const { authenticate } = auth();
+const { registerUser } = auth();
 
 const handleRegister = async () => {
     try {
-        await authenticate(registerUser.value, 'register')
+        await registerUser(registerData.value)
         router.push('/login');
     } catch (err) {
         errors.value = JSON.parse(err.message).errors;
@@ -29,22 +29,29 @@ const handleRegister = async () => {
 <template>
     <section class="section-register">
         <div class="section__inner shell">
-            <h1 class="section__title">Регистрация</h1>
+            <h1 class="section__title">FinTech</h1>
+            <p class="subtitle">регистрирай се в системата</p>
 
             <form @submit.prevent="handleRegister">
-                <FormInput label="Име" v-model="registerUser.name" :error="errors?.name?.[0]" />
+                <FormInput label="Име" v-model="registerData.name" :error="errors?.name?.[0]" />
 
-                <FormInput label="Презиме" v-model="registerUser.middle_name" :is-optional="true"
+                <FormInput label="Презиме" v-model="registerData.middle_name" :optional="false"
                     :error="errors?.middle_name?.[0]" />
 
-                <FormInput label=" Фамилия" v-model="registerUser.last_name" :is-optional="true"
+                <FormInput label=" Фамилия" v-model="registerData.last_name" :optional="false"
                     :error="errors?.last_name?.[0]" />
 
-                <FormInput label=" Имейл" v-model="registerUser.email" :error="errors?.email?.[0]" />
+                <FormInput label=" Имейл" v-model="registerData.email" :error="errors?.email?.[0]" />
 
-                <FormInput label="Парола" v-model="registerUser.password" :error="errors?.password?.[0]" />
+                <FormInput input-type="password" label="Парола" v-model="registerData.password"
+                    :error="errors?.password?.[0]" />
 
                 <Button text="Продължи" />
+
+                <div class="form-bottom">
+                    <p class="text">Имаш акаунт?</p>
+                    <a @click.prevent="router.push('/login')" class="text-colored">Sing up</a>
+                </div>
             </form>
         </div>
     </section>
@@ -55,8 +62,25 @@ const handleRegister = async () => {
 .section-register {
     margin-block: 32px;
 
-    .section__title {
-        text-align: center;
+    .form-bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11.9px;
+        font-weight: 400;
+        gap: 3px;
+
+        .text {
+            color: #94A3B8;
+        }
+
+        .text-colored {
+            color: #818CF8;
+        }
+
+        .text-colored:hover {
+            cursor: pointer;
+        }
     }
 }
 </style>

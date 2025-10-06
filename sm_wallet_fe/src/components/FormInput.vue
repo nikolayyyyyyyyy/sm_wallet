@@ -14,9 +14,9 @@ defineProps({
         String,
         required: false
     },
-    isOptional: {
+    optional: {
         Boolean,
-        default: false
+        default: true
     }
 });
 
@@ -26,8 +26,7 @@ const model = defineModel();
 <template>
     <div class="form-input">
         <label>{{ label }}
-            <p class="required-green" v-if="isOptional">(не е задължително)<span>*</span></p>
-            <p class="required-red" v-else>(задължително)<span>*</span></p>
+            <p v-if="optional != true">(не е задължително)<span>*</span></p>
         </label>
 
         <input :type="inputType" v-model="model">
@@ -43,28 +42,28 @@ const model = defineModel();
     gap: 4px;
 
     input {
-        border-radius: 3px;
-        padding: 5px;
-        border: 1px solid var(--c-gray);
+        border-radius: 8px;
+        padding: 13px 13px 13px 41px;
+        flex-shrink: 0;
+        border: 1px solid #475569;
+        background: #334155;
+        color: var(--c-white);
     }
 
     label {
         display: flex;
         align-items: center;
         gap: 3px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--c-gray);
 
-        .required-green,
-        .required-red {
-            font-size: 12px;
-            color: var(--c-gray);
+        p {
+            font-size: 10px;
         }
 
-        .required-red span {
+        span {
             color: var(--c-red);
-        }
-
-        .required-green span {
-            color: var(--c-green);
         }
     }
 }

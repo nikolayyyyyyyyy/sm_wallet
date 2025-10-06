@@ -15,18 +15,13 @@ defineProps({
 
 <style scoped>
 .btn {
-    width: 50%;
+    width: 100%;
     align-self: center;
     font-size: 16px;
-    padding: 5px;
-    border-radius: 3px;
-    border: 1px solid var(--c-gray);
-    background-color: var(--c-base);
     color: var(--c-white);
-}
-
-.btn:hover {
-    background-color: var(--c-blue);
     cursor: pointer;
+    border-radius: 9999px;
+    background: var(--c-blue);
+    padding: 15px 0 16px 0;
 }
 </style>
