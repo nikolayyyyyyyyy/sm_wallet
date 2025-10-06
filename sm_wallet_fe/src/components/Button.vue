@@ -22,6 +22,6 @@ defineProps({
     cursor: pointer;
     border-radius: 9999px;
     background: var(--c-blue);
-    padding: 15px 0 16px 0;
+    padding-block: 15px;
 }
 </style>
