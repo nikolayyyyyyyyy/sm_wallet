@@ -19,9 +19,9 @@ defineProps({
     align-self: center;
     font-size: 16px;
     color: var(--c-white);
-    cursor: pointer;
     border-radius: 9999px;
     background: var(--c-blue);
     padding-block: 15px;
+    border: 0;
 }
 </style>

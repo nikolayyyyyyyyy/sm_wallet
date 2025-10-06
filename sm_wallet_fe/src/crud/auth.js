@@ -21,13 +21,13 @@ const loginUser = async (dto) => {
 
 
 const registerUser = async (registerData) => {
-    const response = await fetch(`${baseUrl}/${endpoint}`, {
+    const response = await fetch(`${baseUrl}/register`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(dto)
+        body: JSON.stringify(registerData)
     });
 
     if (!response.ok) {

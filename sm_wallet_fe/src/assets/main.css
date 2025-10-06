@@ -52,7 +52,7 @@ body {
 form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   padding: 32px 24px;
   border-radius: 12px;
   width: 35%;

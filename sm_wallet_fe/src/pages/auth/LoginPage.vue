@@ -49,6 +49,11 @@ const handleLogin = async () => {
                 <Button text="вход" />
 
                 <FormErrorMessage v-if="invalidCredentials" :text="invalidCredentials" />
+
+                <div class="form-bottom">
+                    <p class="text">Нямаш акаунт?</p>
+                    <a @click.prevent="router.push('/register')" class="text-colored">Register</a>
+                </div>
             </form>
         </div>
     </section>
@@ -57,5 +62,26 @@ const handleLogin = async () => {
 <style scoped lang="scss">
 .section-login {
     margin-block: 32px;
+
+    .form-bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11.9px;
+        font-weight: 400;
+        gap: 3px;
+
+        .text {
+            color: #94A3B8;
+        }
+
+        .text-colored {
+            color: #818CF8;
+        }
+
+        .text-colored:hover {
+            cursor: pointer;
+        }
+    }
 }
 </style>

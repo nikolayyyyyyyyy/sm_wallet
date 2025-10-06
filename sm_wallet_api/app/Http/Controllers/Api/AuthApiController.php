@@ -79,8 +79,6 @@ class AuthApiController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json([
-            'message' => 'Logged out successfully',
-        ], 200);
+        return response()->json(status: 200);
     }
 }
