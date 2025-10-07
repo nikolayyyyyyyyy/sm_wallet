@@ -43,25 +43,9 @@ body {
   background-color: var(--c-backgound);
 }
 
-.section__title,
-.subtitle {
-  text-align: center;
-  color: var(--c-white);
-}
-
-.subtitle {
-  font-size: 12px;
-  font-weight: 200;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.base-form {
   padding: 32px 24px;
   border-radius: 12px;
-  width: 35%;
-  margin: 30px auto;
   background-color: var(--c-grayed);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }

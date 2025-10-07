@@ -40,11 +40,11 @@ const handleLogin = async () => {
             <h1 class="section__title">FinTech</h1>
             <p class="subtitle">вход в системата</p>
 
-            <form @submit.prevent="handleLogin">
-                <FormInput label="Имейл" v-model="loginData.email" :error="errors?.email?.[0]" />
+            <form class="base-form login-form" @submit.prevent="handleLogin">
+                <FormInput label="Имейл" v-model="loginData.email" :error="errors?.email?.[0]" :is-for-email="true" />
 
                 <FormInput label="Парола" input-type="password" v-model="loginData.password"
-                    :error="errors?.password?.[0]" />
+                    :error="errors?.password?.[0]" :is-for-password="true" />
 
                 <Button text="вход" />
 
@@ -62,6 +62,25 @@ const handleLogin = async () => {
 <style scoped lang="scss">
 .section-login {
     margin-block: 32px;
+
+    .section__title,
+    .subtitle {
+        text-align: center;
+        color: var(--c-white);
+    }
+
+    .subtitle {
+        font-size: 12px;
+        font-weight: 200;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 35%;
+        margin: 30px auto;
+    }
 
     .form-bottom {
         display: flex;

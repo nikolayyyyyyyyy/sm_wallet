@@ -32,7 +32,7 @@ const handleRegister = async () => {
             <h1 class="section__title">FinTech</h1>
             <p class="subtitle">регистрирай се в системата</p>
 
-            <form @submit.prevent="handleRegister">
+            <form class="base-form form-register" @submit.prevent="handleRegister">
                 <FormInput label="Име" v-model="registerData.name" :error="errors?.name?.[0]" />
 
                 <FormInput label="Презиме" v-model="registerData.middle_name" :optional="false"
@@ -41,10 +41,11 @@ const handleRegister = async () => {
                 <FormInput label=" Фамилия" v-model="registerData.last_name" :optional="false"
                     :error="errors?.last_name?.[0]" />
 
-                <FormInput label=" Имейл" v-model="registerData.email" :error="errors?.email?.[0]" />
+                <FormInput label=" Имейл" v-model="registerData.email" :error="errors?.email?.[0]"
+                    :is-for-email="true" />
 
                 <FormInput input-type="password" label="Парола" v-model="registerData.password"
-                    :error="errors?.password?.[0]" />
+                    :error="errors?.password?.[0]" :is-for-password="true" />
 
                 <Button text="Продължи" />
 
@@ -61,6 +62,25 @@ const handleRegister = async () => {
 <style scoped lang="scss">
 .section-register {
     margin-block: 32px;
+
+    .section__title,
+    .subtitle {
+        text-align: center;
+        color: var(--c-white);
+    }
+
+    .subtitle {
+        font-size: 12px;
+        font-weight: 200;
+    }
+
+    .form-register {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 35%;
+        margin: 30px auto;
+    }
 
     .form-bottom {
         display: flex;

@@ -3,12 +3,20 @@ defineProps({
     text: {
         String,
         required: true
+    },
+    update_btn: {
+        type: Boolean,
+        required: false
+    },
+    delete_btn: {
+        type: Boolean,
+        required: false
     }
 });
 </script>
 
 <template>
-    <button class="btn">
+    <button class="btn" :class="{ 'btn--delete': delete_btn, 'btn--update': update_btn }">
         {{ text }}
     </button>
 </template>
@@ -23,5 +31,14 @@ defineProps({
     background: var(--c-blue);
     padding-block: 15px;
     border: 0;
+    cursor: pointer;
+}
+
+.btn--delete {
+    background-color: var(--c-red);
+}
+
+.btn--update {
+    background-color: rgb(179, 179, 9);
 }
 </style>
