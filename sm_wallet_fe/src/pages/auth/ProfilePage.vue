@@ -2,7 +2,7 @@
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import { auth } from '@/crud/auth';
-import { onBeforeMount, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -10,15 +10,13 @@ const currentUser = ref();
 const new_password = ref();
 const repeat_new_password = ref();
 
-const { getUser } = auth();
-onBeforeMount(async () => {
-    if (!localStorage.getItem('token')) {
-        router.push('/login');
-        return;
-    }
+const { getCurrentUser, isLogged } = auth();
+currentUser.value = getCurrentUser();
 
-    currentUser.value = await getUser();
-});
+if (!isLogged()) {
+    router.push('/login');
+}
+
 
 const updateUser = async () => {
     console.log(currentUser?.value);

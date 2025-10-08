@@ -76,7 +76,7 @@ const model = defineModel();
 
     input {
         border-radius: 8px;
-        padding: 13px 13px 13px 41px;
+        padding: 13px;
         flex-shrink: 0;
         border: 1px solid #475569;
         background: #334155;

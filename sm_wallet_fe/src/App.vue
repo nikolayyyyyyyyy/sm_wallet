@@ -1,18 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { auth } from './crud/auth';
 
-const isAuthenticated = ref(localStorage.getItem('token') ? true : false);
+
+const { isLogged, logoutUser } = auth();
 
 const logout = async () => {
-  await fetch('http://localhost:8000/api/logout', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-  localStorage.removeItem('token');
+  await logoutUser();
 };
 </script>
 
@@ -20,7 +13,7 @@ const logout = async () => {
   <div>
     <nav class="nav">
       <div class="nav-auth-links">
-        <RouterLink v-if="isAuthenticated" class="nav-item" to="/my-profile">
+        <RouterLink v-if="isLogged()" class="nav-item" to="/my-profile">
           <p>Профил</p>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
@@ -33,7 +26,7 @@ const logout = async () => {
           </svg>
         </RouterLink>
 
-        <RouterLink v-if="isAuthenticated" class="nav-item" to="/">
+        <RouterLink v-if="isLogged()" class="nav-item" to="/">
           <p>Начало</p>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
@@ -46,7 +39,7 @@ const logout = async () => {
           </svg>
         </RouterLink>
 
-        <RouterLink v-if="!isAuthenticated" class="nav-item" to="/login">
+        <RouterLink v-if="!isLogged()" class="nav-item" to="/login">
           <p>Вход</p>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -60,7 +53,7 @@ const logout = async () => {
           </svg>
         </RouterLink>
 
-        <RouterLink v-if="!isAuthenticated" class="nav-item" to="/register">
+        <RouterLink v-if="!isLogged()" class="nav-item" to="/register">
           <p>Регистрация</p>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -77,7 +70,7 @@ const logout = async () => {
       </div>
 
       <div class="nav-logout">
-        <RouterLink v-if="isAuthenticated" @click="logout" class="nav-item logout" to="/login">
+        <RouterLink v-if="isLogged()" @click="logout" class="nav-item logout" to="/login">
           <p>Изход</p>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

@@ -1,4 +1,18 @@
+import { ref } from "vue";
+
 const baseUrl = 'http://127.0.0.1:8000/api';
+
+const isAuthenticated = ref(false);
+const user = ref({});
+
+function isLogged() {
+    console.log(isAuthenticated.value);
+    return isAuthenticated.value;
+}
+
+function getCurrentUser() {
+    return user.value;
+};
 
 const loginUser = async (dto) => {
     const response = await fetch(`${baseUrl}/login`, {
@@ -17,6 +31,8 @@ const loginUser = async (dto) => {
 
     const data = await response.json();
     localStorage.setItem('token', data.token);
+    isAuthenticated.value = !isAuthenticated.value;
+    user.value = await getUser();
 };
 
 
@@ -51,10 +67,26 @@ const getUser = async () => {
     }
 };
 
+const logoutUser = async () => {
+    await fetch('http://localhost:8000/api/logout', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    localStorage.removeItem('token');
+    isAuthenticated.value = !isAuthenticated.value;
+    user.value = {};
+};
+
 export function auth() {
     return {
         loginUser,
         registerUser,
-        getUser
+        logoutUser,
+        isLogged,
+        getCurrentUser
     }
 }
