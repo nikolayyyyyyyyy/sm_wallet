@@ -21,7 +21,8 @@ class AuthApiController extends Controller
             'password' => 'required|min:3|max:100'
         ], [
             'name.required' => 'полето е задължително',
-            'password.required' => 'полето е задължително'
+            'password.required' => 'полето е задължително',
+            'email.unique' => 'Имейла вече съществува'
         ]);
 
         if ($validator->fails()) {

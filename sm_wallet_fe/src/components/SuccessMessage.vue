@@ -1,21 +1,21 @@
 <script setup>
 defineProps({
     text: {
-        String,
+        type: String,
         required: true
     }
 });
 </script>
 
 <template>
-    <p class="error">{{ text }}</p>
+    <div class="success">
+        <p>{{ text }}</p>
+    </div>
 </template>
 
 <style scoped>
-.error {
-    color: var(--c-red);
-    font-size: 13px;
-    max-width: 200px;
+.success {
+    color: var(--c-green);
     text-align: center;
 }
 </style>

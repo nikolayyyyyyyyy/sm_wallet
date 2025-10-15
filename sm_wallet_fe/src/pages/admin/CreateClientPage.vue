@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
-import { ref } from 'vue';
+import SelectComponent from '@/components/SelectComponent.vue';
+import SuccessMessage from '@/components/SuccessMessage.vue';
+
+import { store } from '@/crud/create';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const clientData = ref({
     name: '',
@@ -9,21 +14,35 @@ const clientData = ref({
     last_name: '',
     email: '',
     password: '',
-    role_id: null
+    role_id: ''
 });
+const errors = ref(null);
+const router = useRouter();
+const { create } = store();
+const successMessage = ref('');
 
-const displayAdminInput = ref(false);
-const displayUserInput = ref(false);
+const storeClient = async () => {
+    try {
+        await create(clientData.value, 'clients');
+        errors.value = [];
+        clientData.value.name = '';
+        clientData.value.middle_name = '';
+        clientData.value.last_name = '';
+        clientData.value.email = '';
+        clientData.value.password = '';
+        clientData.value.role_id = '';
+        successMessage.value = 'Клиентът е създаден успешно!'
+    } catch (err) {
+        errors.value = JSON.parse(err.message).errors;
+        successMessage.value = '';
+    }
+};
 
-function adminChoose() {
-    clientData.value.role_id = 1;
-    displayAdminInput.value = !displayAdminInput.value;
-}
-
-function userChoose() {
-    clientData.value.role_id = 2;
-    displayUserInput.value = displayUserInput.value;
-}
+onMounted(() => {
+    if (!localStorage.getItem('token')) {
+        router.push('login');
+    }
+});
 </script>
 
 <template>
@@ -31,60 +50,27 @@ function userChoose() {
         <div class="section__inner">
             <h1 class="section__title">Добави Клиент</h1>
 
-            <form class="base-form">
+            <form @submit.prevent="storeClient" class="base-form">
                 <div class="form-names">
-                    <FormInput label="Име" />
+                    <FormInput label="Име" v-model="clientData.name" :error="errors?.name?.[0]" />
 
-                    <FormInput label="Презиме" />
+                    <FormInput label="Презиме" v-model="clientData.middle_name" :error="errors?.middle_name?.[0]" />
 
-                    <FormInput label="Фамилия" />
+                    <FormInput label="Фамилия" v-model="clientData.last_name" :error="errors?.last_name?.[0]" />
                 </div>
 
-                <FormInput label="Имейл" />
+                <FormInput label="Имейл" v-model="clientData.email" :error="errors?.email?.[0]" />
 
-                <FormInput label="Парола" />
+                <SelectComponent v-model="clientData.role_id" :error="errors?.role_id?.[0]" name="select-role"
+                    id="select-role" label="Права"
+                    :options="[{ id: 1, text: 'Амин' }, { id: 2, text: 'Потребител' }]" />
 
-                <div class="radio-inputs">
-                    <div @click.prevent="adminChoose" class="radio">
-                        <svg v-if="displayAdminInput" xmlns="http://www.w3.org/2000/svg" width="25" height="24"
-                            viewBox="0 0 25 24" fill="none">
-                            <circle cx="12.5" cy="12" r="8.935" stroke="#6784C1" stroke-width="2.13" />
-                            <circle cx="12.5" cy="12" r="3.935" fill="#6784C1" stroke="#6784C1" stroke-width="2.13" />
-                        </svg>
-
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                            fill="none">
-                            <circle cx="12.5" cy="12" r="8.935" stroke="#6784C1" stroke-width="2.13" />
-                        </svg>
-
-                        <div class="radio-text">
-                            Админ
-                        </div>
-                        <input type="radio" name="radio" value="1" v-model="clientData.role_id" hidden>
-                    </div>
-
-                    <div @click.prevent="userChoose" class="radio">
-                        <svg v-if="displayUserInput" xmlns="http://www.w3.org/2000/svg" width="25" height="24"
-                            viewBox="0 0 25 24" fill="none">
-                            <circle cx="12.5" cy="12" r="8.935" stroke="#6784C1" stroke-width="2.13" />
-                            <circle cx="12.5" cy="12" r="3.935" fill="#6784C1" stroke="#6784C1" stroke-width="2.13" />
-                        </svg>
-
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                            fill="none">
-                            <circle cx="12.5" cy="12" r="8.935" stroke="#6784C1" stroke-width="2.13" />
-                        </svg>
-
-                        <div class="radio-text">
-                            Потребител
-                        </div>
-                        <input type="radio" name="radio" value="2" v-model="clientData.role_id" hidden>
-                    </div>
-                </div>
+                <FormInput label="Парола" v-model="clientData.password" :error="errors?.password?.[0]" />
 
                 <Button text="Добави" />
+
+                <SuccessMessage v-if="successMessage" :text="successMessage" />
             </form>
-            {{ clientData.role_id }}
         </div>
     </section>
 </template>
