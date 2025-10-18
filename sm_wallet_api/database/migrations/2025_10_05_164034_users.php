@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->string('last_name', 20)->nullable(true);
             $table->string('email', 20)->unique()->nullable(false);
             $table->string('password')->nullable(false);
+            $table->softDeletes();
 
-            $table->bigInteger('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreignId('role_id')->constrained('roles');
         });
     }
 

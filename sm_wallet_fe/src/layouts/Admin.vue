@@ -8,8 +8,7 @@ import { RouterLink } from 'vue-router';
         <div class="section__inner shell">
             <div class="base-form admin-panel">
                 <RouterLink class="panel-item" to="/create-client">Добави Клиент</RouterLink>
-                <RouterLink class="panel-item" to="/create-card">Добави Карта</RouterLink>
-                <RouterLink class="panel-item" to="/clients/all">Всички Клиенти</RouterLink>
+                <RouterLink class="panel-item" to="/create-employee">Добави Служител</RouterLink>
             </div>
         </div>
     </section>

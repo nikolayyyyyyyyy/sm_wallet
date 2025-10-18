@@ -4,6 +4,7 @@ import RegisterPage from "./pages/auth/RegisterPage.vue";
 import DashboardPage from "./pages/DashboardPage.vue";
 import ProfilePage from "./pages/auth/ProfilePage.vue";
 import CreateClientPage from "./pages/admin/CreateClientPage.vue";
+import CreateEmployeesPage from "./pages/admin/CreateEmployeesPage.vue";
 
 
 const routes = [
@@ -11,7 +12,8 @@ const routes = [
     { path: '/login', component: LoginPage },
     { path: '/register', component: RegisterPage },
     { path: '/my-profile', component: ProfilePage },
-    { path: '/create-client', component: CreateClientPage }
+    { path: '/create-client', component: CreateClientPage },
+    { path: '/create-employee', component: CreateEmployeesPage }
 ]
 
 export const router = createRouter({
