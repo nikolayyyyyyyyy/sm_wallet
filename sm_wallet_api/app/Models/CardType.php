@@ -10,7 +10,7 @@ class CardType extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'card_type'
+        'account_type'
     ];
 
     public function cards()

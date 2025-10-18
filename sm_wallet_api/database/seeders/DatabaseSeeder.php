@@ -1,27 +1,20 @@
 <?php
 namespace Database\Seeders;
-use App\Models\User;
-use Illuminate\Database\Seeder;
-use App\Models\Role;
-use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Database\Seeder;
+use Database\Seeders\CardTypeSeeder;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\UserSeeder;
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        Role::create([
-            'role_name' => 'Админ'
-        ]);
-
-        Role::create([
-            'role_name' => 'Потребител'
-        ]);
-
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@admin',
-            'password' => Hash::make('12345678'),
-            'role_id' => '1'
+        $this->call([
+            CardTypeSeeder::class,
+            CurrencySeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class
         ]);
     }
 }
