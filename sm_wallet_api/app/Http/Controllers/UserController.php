@@ -21,7 +21,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:20|min:1',
@@ -71,19 +71,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'nullable|max:20|min:1',
-            'middle_name' => 'nullable|min:1|max:20',
-            'last_name' => 'nullable|min:1|max:20',
-            'email' => 'nullable|email|unique:users,email',
-            'password' => 'nullable|min:3|max:100'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
-            ], 422);
-        }
+        //
     }
 
     /**

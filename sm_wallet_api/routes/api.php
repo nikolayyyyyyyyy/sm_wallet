@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\TransactionTypeController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -15,11 +17,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // User routes
-    Route::post('/clients', [UserController::class, 'store']);
+    Route::post('/clients', [UserController::class, 'storeUser']);
 
     // Currency routes
     Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
-    ;
+
+    // Account Type routes
+    Route::post('/account-types', [AccountTypeController::class, 'storeAccountType']);
+
+    // Transaction Type routes
+    Route::post('/transaction-types', [TransactionTypeController::class, 'storeTransactionType']);
 });
 
 //Public route
