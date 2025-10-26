@@ -12,11 +12,11 @@ class Account extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'card_number',
+        'account_number',
         'amount',
         'interest',
         'currency_id',
-        'card_type_id',
+        'account_type_id',
         'user_id'
     ];
 
