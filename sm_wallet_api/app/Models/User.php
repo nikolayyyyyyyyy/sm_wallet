@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Card;
+use App\Models\Account;
 
 class User extends Model
 {
@@ -30,6 +30,6 @@ class User extends Model
 
     public function cards()
     {
-        $this->hasMany(Card::class);
+        $this->hasMany(Account::class);
     }
 }

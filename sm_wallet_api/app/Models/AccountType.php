@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Card;
+use App\Models\Account;
 
-class CardType extends Model
+class AccountType extends Model
 {
     public $timestamps = false;
 
@@ -15,6 +15,6 @@ class CardType extends Model
 
     public function cards()
     {
-        $this->hasMany(Card::class);
+        $this->hasMany(Account::class);
     }
 }

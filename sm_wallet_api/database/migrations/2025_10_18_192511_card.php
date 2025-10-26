@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('cards', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('card_number')->unique();
+            $table->string('account_number')->unique();
             $table->decimal('amount', 10, 2)->default(0);
             $table->decimal('interest', 4, 2)->default(0);
 
             $table->foreignId('currency_id')->constrained('currencies')->cascadeOnDelete();
-            $table->foreignId('card_type_id')->constrained('card_types')->cascadeOnDelete();
+            $table->foreignId('account_type_id')->constrained('account_types')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
             $table->softDeletes();
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('cards');
+        Schema::dropIfExists('accounts');
     }
 };

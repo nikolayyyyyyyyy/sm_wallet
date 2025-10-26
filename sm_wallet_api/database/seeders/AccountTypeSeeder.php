@@ -1,10 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\CardType;
+use App\Models\AccountType;
 use Illuminate\Database\Seeder;
 
-class CardTypeSeeder extends Seeder
+class AccountTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,15 +12,15 @@ class CardTypeSeeder extends Seeder
     public function run(): void
     {
         // CardType seeder
-        CardType::create([
+        AccountType::create([
             'account_type' => 'Спестовна'
         ]);
 
-        CardType::create([
+        AccountType::create([
             'account_type' => 'Разплащателна'
         ]);
 
-        CardType::create([
+        AccountType::create([
             'account_type' => 'Студентска'
         ]);
     }

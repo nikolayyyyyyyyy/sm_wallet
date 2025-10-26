@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\CardType;
 use App\Models\Currency;
 
-class Card extends Model
+class Account extends Model
 {
     public $timestamps = false;
 
@@ -32,6 +32,6 @@ class Card extends Model
 
     public function card_type()
     {
-        $this->belongsTo(CardType::class);
+        $this->belongsTo(AccountType::class);
     }
 }
