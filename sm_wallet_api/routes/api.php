@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CurrencyController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -15,6 +16,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User routes
     Route::post('/clients', [UserController::class, 'store']);
+
+    // Currency routes
+    Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
+    ;
 });
 
 //Public route
