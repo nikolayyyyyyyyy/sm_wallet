@@ -4,7 +4,9 @@ import RegisterPage from "./pages/auth/RegisterPage.vue";
 import DashboardPage from "./pages/DashboardPage.vue";
 import ProfilePage from "./pages/auth/ProfilePage.vue";
 import CreateClientPage from "./pages/admin/CreateClientPage.vue";
-import CreateEmployeesPage from "./pages/admin/CreateEmployeesPage.vue";
+import CreateCurrencyPage from "./pages/admin/CreateCurrencyPage.vue";
+import CreateAccountTypePage from "./pages/admin/CreateAccountTypePage.vue";
+import CreateTransactionTypePage from "./pages/admin/CreateTransactionTypePage.vue";
 
 
 const routes = [
@@ -13,7 +15,9 @@ const routes = [
     { path: '/register', component: RegisterPage },
     { path: '/my-profile', component: ProfilePage },
     { path: '/create-client', component: CreateClientPage },
-    { path: '/create-employee', component: CreateEmployeesPage }
+    { path: '/create-currency', component: CreateCurrencyPage },
+    { path: '/create-account-type', component: CreateAccountTypePage },
+    { path: '/create-transaction-type', component: CreateTransactionTypePage }
 ]
 
 export const router = createRouter({

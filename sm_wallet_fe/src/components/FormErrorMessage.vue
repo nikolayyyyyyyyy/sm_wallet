@@ -15,7 +15,6 @@ defineProps({
 .error {
     color: var(--c-red);
     font-size: 13px;
-    max-width: 200px;
     text-align: center;
 }
 </style>

@@ -1,7 +1,6 @@
 <script setup>
 import { auth } from './crud/auth';
 
-
 const { isLogged, logoutUser } = auth();
 
 const logout = async () => {
