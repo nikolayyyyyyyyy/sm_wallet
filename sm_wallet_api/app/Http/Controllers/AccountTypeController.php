@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\AccountType;
 class AccountTypeController extends Controller
 {
+    public function getAccountTypes()
+    {
+        $accountTypes = AccountType::all();
+        return response()->json($accountTypes, 200);
+    }
+
     public function storeAccountType(Request $request)
     {
         $validator = Validator::make(

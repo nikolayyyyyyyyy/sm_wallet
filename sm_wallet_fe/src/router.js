@@ -7,6 +7,7 @@ import CreateClientPage from "./pages/admin/CreateClientPage.vue";
 import CreateCurrencyPage from "./pages/admin/CreateCurrencyPage.vue";
 import CreateAccountTypePage from "./pages/admin/CreateAccountTypePage.vue";
 import CreateTransactionTypePage from "./pages/admin/CreateTransactionTypePage.vue";
+import CreateAccountPage from "./pages/admin/CreateAccountPage.vue";
 
 
 const routes = [
@@ -17,7 +18,8 @@ const routes = [
     { path: '/create-client', component: CreateClientPage },
     { path: '/create-currency', component: CreateCurrencyPage },
     { path: '/create-account-type', component: CreateAccountTypePage },
-    { path: '/create-transaction-type', component: CreateTransactionTypePage }
+    { path: '/create-transaction-type', component: CreateTransactionTypePage },
+    { path: '/create-account', component: CreateAccountPage }
 ]
 
 export const router = createRouter({

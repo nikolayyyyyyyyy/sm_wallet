@@ -19,12 +19,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // User routes
+    Route::get('/clients', [UserController::class, 'index']);
     Route::post('/clients', [UserController::class, 'storeUser']);
 
     // Currency routes
+    Route::get('/currencies', [CurrencyController::class, 'getCurrencies']);
     Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
 
     // Account Type routes
+    Route::get('/account-types', [AccountTypeController::class, 'getAccountTypes']);
     Route::post('/account-types', [AccountTypeController::class, 'storeAccountType']);
 
     // Transaction Type routes

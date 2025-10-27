@@ -7,6 +7,12 @@ use App\Models\Currency;
 
 class CurrencyController extends Controller
 {
+
+    public function getCurrencies()
+    {
+        $currencies = Currency::all();
+        return response()->json($currencies, 200);
+    }
     public function storeCurrency(Request $request)
     {
         $validator = Validator::make(

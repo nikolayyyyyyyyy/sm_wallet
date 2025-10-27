@@ -44,11 +44,16 @@ const storeTransactionType = async () => {
 <style scoped lang="scss">
 .section-create-transaction-type {
     margin-top: 24px;
-    color: var(--c-gray);
+
+    .section__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
 
     .section__title {
         text-align: center;
-        margin-bottom: 24px;
+        color: var(--c-gray);
     }
 
     form {

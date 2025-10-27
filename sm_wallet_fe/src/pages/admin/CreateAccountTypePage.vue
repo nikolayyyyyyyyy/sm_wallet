@@ -45,10 +45,15 @@ const storeAccountType = async () => {
 .section-create-account-type {
     margin-block: 32px;
 
+    .section__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
     .section__title {
         text-align: center;
         color: var(--c-gray);
-        margin-bottom: 24px;
     }
 
     form {
