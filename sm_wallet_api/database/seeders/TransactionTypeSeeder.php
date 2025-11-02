@@ -21,7 +21,7 @@ class TransactionTypeSeeder extends Seeder
         ]);
 
         TransactionType::create([
-            'transaction_type' => 'Прехвърляне'
+            'transaction_type' => 'Превод'
         ]);
     }
 }
