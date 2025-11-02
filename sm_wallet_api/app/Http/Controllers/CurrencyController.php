@@ -37,4 +37,12 @@ class CurrencyController extends Controller
 
         return response()->json($currency, 201);
     }
+
+    public function deleteCurrency(string $id)
+    {
+        $currency = Currency::where('id', '=', $id)->first();
+        $currency->delete();
+
+        return response()->json(status: 200);
+    }
 }

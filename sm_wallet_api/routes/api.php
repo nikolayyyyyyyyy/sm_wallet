@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/clients', [UserController::class, 'storeUser']);
 
     // Currency routes
+    Route::delete('/currencies/{id}/delete', [CurrencyController::class, 'deleteCurrency']);
     Route::get('/currencies', [CurrencyController::class, 'getCurrencies']);
     Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
 
