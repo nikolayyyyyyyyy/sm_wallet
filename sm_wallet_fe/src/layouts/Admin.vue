@@ -9,9 +9,10 @@ import { RouterLink } from 'vue-router';
             <div class="base-form admin-panel">
                 <RouterLink class="panel-item" to="/create-client">Добави Клиент</RouterLink>
                 <RouterLink class="panel-item" to="/create-currency">Добави Валута</RouterLink>
-                <RouterLink class="panel-item" to="create-account-type">Добави тип на акаунт</RouterLink>
-                <RouterLink class="panel-item" to="create-transaction-type">Добави тип на транзакция</RouterLink>
-                <RouterLink class="panel-item" to="create-account">Добави Акаунт</RouterLink>
+                <RouterLink class="panel-item" to="create-account-type">Добави Тип Акаунт</RouterLink>
+                <RouterLink class="panel-item" to="create-transaction-type">Добави Тип Транзакция</RouterLink>
+                <RouterLink class="panel-item" to="create-account">Добави Карта</RouterLink>
+                <RouterLink class="panel-item" to="create-transaction">Добави Транзакция</RouterLink>
             </div>
         </div>
     </section>

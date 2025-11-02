@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/account-types', [AccountTypeController::class, 'storeAccountType']);
 
     // Transaction Type routes
+    Route::get('/transaction-types', [TransactionTypeController::class, 'getTransactionTypes']);
     Route::post('/transaction-types', [TransactionTypeController::class, 'storeTransactionType']);
 
     // Account routes

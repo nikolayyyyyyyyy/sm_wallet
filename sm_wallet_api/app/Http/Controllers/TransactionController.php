@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,14 +17,18 @@ class TransactionController extends Controller
                 'amount' => 'required|numeric',
                 'note' => 'nullable|string|max:255',
                 'transaction_type_id' => 'required|integer|exists:transaction_types,id',
-                'account_sender_id' => 'required|integer|exists:accounts,id',
-                'account_receiver_id' => 'required|integer|exists:accounts,id',
+                'account_sender_number' => 'required|exists:accounts,account_number',
+                'account_receiver_number' => 'required|exists:accounts,account_number',
             ],
             [
                 'amount.required' => 'Полето за сума е задължително.',
                 'amount.numeric' => 'Сумата трябва да бъде число.',
-                'note.string' => 'Бележката трябва да бъде текст.',
                 'note.max' => 'Бележката не може да надвишава 255 символа.',
+                'transaction_type_id.required' => 'Типът на транзакция е задължителна',
+                'account_sender_number.required' => 'Полето за изпращач е задължително',
+                'account_sender_number.exists' => 'Номера на изпращача не съществува.',
+                'account_receiver_number.required' => 'Полето за получател е задължително',
+                'account_receiver_number.exists' => 'Номера на получател не съществува.'
             ]
         );
 
@@ -31,12 +36,24 @@ class TransactionController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        $account_sender = Account::where("account_number", "=", $request->account_sender_number)->first();
+        $account_receiver = Account::where("account_number", "=", $request->account_receiver_number)->first();
+
+        if ($account_sender->amount < $request->amount) {
+            return response()->json(["notEnoughtMoney" => "Изпращача няма достатъчно пари за транзакцията"], 500);
+        }
+
+        $account_sender->amount -= $request->amount;
+        $account_receiver->amount += $request->amount;
+        $account_sender->save();
+        $account_receiver->save();
+
         $transaction = Transaction::create([
             'amount' => $request->amount,
             'note' => $request->note,
             'transaction_type_id' => $request->transaction_type_id,
-            'account_sender_id' => $request->account_sender_id,
-            'account_receiver_id' => $request->account_receiver_id,
+            'account_sender_id' => $account_sender->id,
+            'account_receiver_id' => $account_receiver->id,
         ]);
 
         return response()->json(['transaction' => $transaction], 201);

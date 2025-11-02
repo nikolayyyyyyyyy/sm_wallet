@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\TransactionType;
 class TransactionTypeController extends Controller
 {
+    public function getTransactionTypes()
+    {
+        return response()->json(TransactionType::all(), 200);
+    }
+
     public function storeTransactionType(Request $request)
     {
         $validator = Validator::make(
