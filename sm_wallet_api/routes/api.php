@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // User routes
+    Route::delete('/clients/{id}/delete', [UserController::class, 'destroy']);
     Route::get('/clients', [UserController::class, 'index']);
     Route::post('/clients', [UserController::class, 'storeUser']);
 
@@ -28,10 +29,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
 
     // Account Type routes
+    Route::delete('/account-types/{id}/delete', [AccountTypeController::class, 'deleteAccountType']);
     Route::get('/account-types', [AccountTypeController::class, 'getAccountTypes']);
     Route::post('/account-types', [AccountTypeController::class, 'storeAccountType']);
 
     // Transaction Type routes
+    Route::delete('/transaction-types/{id}/delete', [TransactionTypeController::class, 'deleteTransactionType']);
     Route::get('/transaction-types', [TransactionTypeController::class, 'getTransactionTypes']);
     Route::post('/transaction-types', [TransactionTypeController::class, 'storeTransactionType']);
 

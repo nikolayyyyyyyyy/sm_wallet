@@ -36,4 +36,12 @@ class TransactionTypeController extends Controller
 
         return response()->json($transactionType, 201);
     }
+
+    public function deleteTransactionType(string $id)
+    {
+        $transaction_type = TransactionType::where('id', '=', $id);
+        $transaction_type->delete();
+
+        return response()->json(status: 200);
+    }
 }

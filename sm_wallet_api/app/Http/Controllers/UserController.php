@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('role')->get();
         return response()->json($users, 200);
     }
 
@@ -80,6 +81,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $client = User::where('id', '=', $id);
+        $client->delete();
+
+        return response()->json(status: 200);
     }
 }

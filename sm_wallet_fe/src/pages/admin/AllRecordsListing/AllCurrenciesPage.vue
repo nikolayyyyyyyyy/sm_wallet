@@ -37,11 +37,12 @@ onBeforeMount(async () => {
 
 <style scoped lang="scss">
 .section-currencies {
-    margin: 32px 50px;
+    margin-top: 50px;
 
     .section__inner {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: 50px;
     }
 
@@ -51,7 +52,7 @@ onBeforeMount(async () => {
         gap: 24px;
         background-color: var(--c-grayed);
         padding: 20px;
-        width: 200px;
+        width: 400px;
         border-radius: 15px;
         color: var(--c-gray);
     }

@@ -36,4 +36,12 @@ class AccountTypeController extends Controller
 
         return response()->json($accountType, 201);
     }
+
+    public function deleteAccountType(string $id)
+    {
+        $account_type = AccountType::where('id', '=', $id);
+        $account_type->delete();
+
+        return response()->json(status: 200);
+    }
 }
