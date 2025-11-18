@@ -33,13 +33,15 @@ const handleRegister = async () => {
             <p class="subtitle">регистрирай се в системата</p>
 
             <form class="base-form form-register" @submit.prevent="handleRegister">
-                <FormInput label="Име" v-model="registerData.name" :error="errors?.name?.[0]" />
+                <div class="section__form-top">
+                    <FormInput label="Име" v-model="registerData.name" :error="errors?.name?.[0]" />
 
-                <FormInput label="Презиме" v-model="registerData.middle_name" :optional="false"
-                    :error="errors?.middle_name?.[0]" />
+                    <FormInput label="Презиме" v-model="registerData.middle_name" :optional="false"
+                        :error="errors?.middle_name?.[0]" />
 
-                <FormInput label=" Фамилия" v-model="registerData.last_name" :optional="false"
-                    :error="errors?.last_name?.[0]" />
+                    <FormInput label=" Фамилия" v-model="registerData.last_name" :optional="false"
+                        :error="errors?.last_name?.[0]" />
+                </div>
 
                 <FormInput label=" Имейл" v-model="registerData.email" :error="errors?.email?.[0]"
                     :is-for-email="true" />
@@ -78,7 +80,7 @@ const handleRegister = async () => {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 35%;
+        width: fit-content;
         margin: 30px auto;
     }
 
@@ -101,6 +103,11 @@ const handleRegister = async () => {
         .text-colored:hover {
             cursor: pointer;
         }
+    }
+
+    .section__form-top {
+        display: flex;
+        gap: 20px;
     }
 }
 </style>
