@@ -28,9 +28,9 @@ onMounted(async () => {
             <p>Роля: {{ client.role.role_name }}</p>
 
             <div class="section__buttons">
-                <Button text="Промени" :update_btn="true" />
+                <Button text="Промени" />
 
-                <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
+                <Button text=" Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
             </div>
         </div>
     </section>
@@ -42,7 +42,7 @@ onMounted(async () => {
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-    margin-top: 32px;
+    margin-block: 32px;
 
     .section__client {
         display: flex;

@@ -9,6 +9,19 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+
+    public function getAllTransactions()
+    {
+        $transactions = Transaction::with([
+            'transaction_type',
+            'sender_account',
+            'receiver_account',
+            'sender_account.currency'
+        ])
+            ->get();
+
+        return response()->json($transactions, 200);
+    }
     public function storeTransaction(Request $request)
     {
         $validator = Validator::make(
@@ -57,5 +70,13 @@ class TransactionController extends Controller
         ]);
 
         return response()->json(['transaction' => $transaction], 201);
+    }
+
+    public function deleteTransaction(string $id)
+    {
+        $transaction = Transaction::where('id', '=', $id);
+        $transaction->delete();
+
+        return response()->json(status: 200);
     }
 }

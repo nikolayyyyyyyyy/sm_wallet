@@ -25,7 +25,7 @@ onMounted(async () => {
             <p class="section__title">Тип на акаунт: {{ account_type.account_type }}</p>
 
             <div class="section__buttons">
-                <Button text="Промени" :update_btn="true" />
+                <Button text="Промени" />
 
                 <Button text="Изтрий" @click.prevent="deleteAccountType(account_type.id)" :delete_btn="true" />
             </div>

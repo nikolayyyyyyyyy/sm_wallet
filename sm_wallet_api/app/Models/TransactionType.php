@@ -11,4 +11,9 @@ class TransactionType extends Model
     protected $fillable = [
         'transaction_type'
     ];
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

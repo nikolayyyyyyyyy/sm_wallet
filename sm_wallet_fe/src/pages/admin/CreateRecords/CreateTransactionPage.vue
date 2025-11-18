@@ -51,19 +51,25 @@ onMounted(async () => {
             <h1 class="section__title">Добави Транзакция</h1>
 
             <form @submit.prevent="storeTransaction" class="base-form">
-                <FormInput label="Сума" v-model="transactionData.amount" :error="errors?.amount?.[0]" />
+                <div class="section__form-top">
+                    <FormInput label="Сума" v-model="transactionData.amount" :error="errors?.amount?.[0]" />
+
+                    <FormInput label="Номер на карта на изпращач" v-model="transactionData.account_sender_number"
+                        :error="errors?.account_sender_number?.[0]" />
+
+                    <FormInput label="Номер на карта на получател" v-model="transactionData.account_receiver_number"
+                        :error="errors?.account_receiver_number?.[0]" />
+                </div>
                 <TextareaFormInput label=" Бележка" v-model="transactionData.note" :error="errors?.note?.[0]" />
+
                 <SelectComponent v-model="transactionData.transaction_type_id" label="Тип на транзакция"
                     :options="transactionTypes" name="transaction-type" id="transaction-type"
                     :error="errors?.transaction_type_id?.[0]" />
-                <FormInput label="Номер на карта на изпращач" v-model="transactionData.account_sender_number"
-                    :error="errors?.account_sender_number?.[0]" />
-                <FormInput label="Номер на карта на получател" v-model="transactionData.account_receiver_number"
-                    :error="errors?.account_receiver_number?.[0]" />
 
                 <Button text="Добави" />
 
                 <SuccessMessage v-if="successMessage" :text="successMessage" />
+
                 <FormErrorMessage v-if="senderDontHaveEnoughtMoney" :text="senderDontHaveEnoughtMoney" />
             </form>
         </div>
@@ -86,10 +92,15 @@ onMounted(async () => {
     }
 
     form {
-        width: 400px;
+        width: fit-content;
         margin: auto;
         display: flex;
         flex-direction: column;
+        gap: 20px;
+    }
+
+    .section__form-top {
+        display: flex;
         gap: 20px;
     }
 }

@@ -59,12 +59,14 @@ onMounted(async () => {
             <h1 class="section__title">Добави акаунт</h1>
 
             <form @submit.prevent="storeAccount" class="base-form">
-                <FormInput label="Номер на сметка" v-model="accoutData.account_number"
-                    :error="errors?.account_number?.[0]" />
+                <div class="section__form-top">
+                    <FormInput label="Номер на сметка" v-model="accoutData.account_number"
+                        :error="errors?.account_number?.[0]" />
 
-                <FormInput label="Наличност" v-model="accoutData.amount" :error="errors?.amount?.[0]" />
+                    <FormInput label="Наличност" v-model="accoutData.amount" :error="errors?.amount?.[0]" />
 
-                <FormInput label="Лихва" v-model="accoutData.interest" :error="errors?.interest?.[0]" />
+                    <FormInput label="Лихва" v-model="accoutData.interest" :error="errors?.interest?.[0]" />
+                </div>
 
                 <SelectComponent label="Валута" name="card-currencys" id="card-currencys" :options="currencies"
                     v-model="accoutData.currency_id" :error="errors?.currency_id?.[0]" />
@@ -102,8 +104,12 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 400px;
         margin: 0 auto;
+    }
+
+    .section__form-top {
+        display: flex;
+        gap: 20px;
     }
 }
 </style>

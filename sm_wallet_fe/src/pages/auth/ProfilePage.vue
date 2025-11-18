@@ -2,6 +2,7 @@
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import { auth } from '@/crud/auth';
+import { del } from '@/crud/delete';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -17,23 +18,23 @@ if (!isLogged()) {
     router.push('/login');
 }
 
-
+const { deleteData } = del();
 const updateUser = async () => {
     console.log(currentUser?.value);
 };
 
-const deleteUser = async () => {
-
+const deleteUser = async (id) => {
+    await deleteData(id, 'clients');
 };
 </script>
 
 <template>
     <section class="section-profile">
-        <div class="section__inner shell">
+        <div class="section__inner">
             <form class="base-form">
-                <FormInput v-if="currentUser?.name" label="Име" v-model="currentUser.name" />
-                <FormInput v-if="currentUser?.middle_name" label="Презиме" v-model="currentUser.middle_name" />
-                <FormInput v-if="currentUser?.last_name" label="Фамилия" v-model="currentUser.last_name" />
+                <FormInput v-model="currentUser.name" />
+                <FormInput v-model="currentUser.middle_name" />
+                <FormInput v-model="currentUser.last_name" />
 
                 <FormInput v-if="currentUser?.email" label="Имейл" v-model="currentUser.email" />
             </form>
@@ -41,20 +42,19 @@ const deleteUser = async () => {
             <form class="base-form">
                 <FormInput label="Стара парола" />
                 <FormInput label="Нова парола" v-model="new_password" />
-                <FormInput label="Повтори нова парола" v-model="repeat_new_password" />
             </form>
         </div>
-        <div class="section__buttons shell">
-            <Button @click.prevent="updateUser" text="Промени" :update_btn="true" />
+        <div class="section__buttons">
+            <Button @click.prevent="updateUser" text="Промени" />
 
-            <Button @click.prevent="deleteUser" :delete_btn="true" text="Изтрий акаунта" />
+            <Button @click.prevent="deleteUser(currentUser.id)" :delete_btn="true" text="Изтрий акаунта" />
         </div>
     </section>
 </template>
 
 <style scoped lang="scss">
 .section-profile {
-    margin-top: 20px;
+    margin: 50px 200px;
 
     .section__inner {
         display: flex;
@@ -73,6 +73,10 @@ const deleteUser = async () => {
         display: flex;
         flex-direction: column;
         gap: 24px;
+
+        button {
+            width: 50%;
+        }
     }
 }
 </style>

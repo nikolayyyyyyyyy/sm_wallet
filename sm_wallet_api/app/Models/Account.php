@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\CardType;
 use App\Models\Currency;
-
+use App\Models\AccountType;
 class Account extends Model
 {
     public $timestamps = false;
@@ -22,16 +21,16 @@ class Account extends Model
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function currency()
     {
-        $this->belongsTo(Currency::class);
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function card_type()
     {
-        $this->belongsTo(AccountType::class);
+        return $this->belongsTo(AccountType::class, 'account_type_id');
     }
 }

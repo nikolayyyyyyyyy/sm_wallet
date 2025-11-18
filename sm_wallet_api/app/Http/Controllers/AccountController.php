@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
+    public function getAllAccounts()
+    {
+        $accounts = Account::with(['currency', 'card_type', 'user'])
+            ->get();
+
+        return response()->json($accounts, 200);
+    }
     public function storeAccount(Request $request)
     {
         $validator = Validator::make(
@@ -54,5 +61,13 @@ class AccountController extends Controller
         ]);
 
         return response()->json($account, 201);
+    }
+
+    public function deleteAccount(string $id)
+    {
+        $account = Account::where('id', '=', $id);
+        $account->delete();
+
+        return response()->json(status: 200);
     }
 }

@@ -28,7 +28,7 @@ onBeforeMount(async () => {
 
                 <div class="section__buttons">
                     <Button :delete_btn="true" text="Изтрий" @click.prevent="deleteCurrency(currency.id)" />
-                    <Button :update_btn="true" text="Промени" />
+                    <Button text="Промени" />
                 </div>
             </div>
         </div>

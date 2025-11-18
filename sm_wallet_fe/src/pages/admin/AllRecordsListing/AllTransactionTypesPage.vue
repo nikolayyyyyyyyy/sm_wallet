@@ -26,7 +26,7 @@ onMounted(async () => {
             </p>
 
             <div class="section__buttons">
-                <Button text="Промени" :update_btn="true" />
+                <Button text="Промени" />
 
                 <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteTransactionType(transaction_type.id)" />
             </div>
