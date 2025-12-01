@@ -9,13 +9,18 @@ use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
-
+use App\Models\User;
 Route::middleware('auth:sanctum')->group(function () {
 
     //Auth routes
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = $request->user();
+
+        return User::where('id', $user->id)
+            ->with(['cards', 'cards.currency', 'cards.card_type'])
+            ->first();
     });
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // User routes

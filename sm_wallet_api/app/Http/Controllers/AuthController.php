@@ -17,12 +17,12 @@ class AuthController extends Controller
             'name' => 'required|max:20|min:1',
             'middle_name' => 'nullable|min:1|max:20',
             'last_name' => 'nullable|min:1|max:20',
-            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3|max:100'
         ], [
             'name.required' => 'полето е задължително',
             'password.required' => 'полето е задължително',
-            'email.unique' => 'Имейла вече съществува'
+            'email.unique' => 'Имейла вече съществува',
+            'email.required' => 'Полето е задължително.'
         ]);
 
         if ($validator->fails()) {
@@ -31,15 +31,41 @@ class AuthController extends Controller
             ], 422);
         }
 
-        User::create([
-            'name' => $request->input('name'),
-            'middle_name' => $request->input('middle_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'role_id' => 1
-        ]);
+        $user = User::withTrashed()
+            ->where('email', '=', $request->input('email'))
+            ->first();
 
+
+        if ($user) {
+            if ($user->trashed()) {
+
+                $user->restore();
+            } else {
+
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email|unique:users,email',
+                ], [
+                    'email.unique' => 'Имейла вече съществува',
+                ]);
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'errors' => $validator->errors(),
+                    ], 422);
+                }
+            }
+
+        } else {
+            User::create([
+                'name' => $request->input('name'),
+                'middle_name' => $request->input('middle_name'),
+                'last_name' => $request->input('last_name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'role_id' => 2
+            ]);
+
+        }
         return response()->json(status: 201);
     }
 

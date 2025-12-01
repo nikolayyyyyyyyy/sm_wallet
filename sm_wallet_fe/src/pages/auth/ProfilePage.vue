@@ -9,7 +9,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const currentUser = ref();
 const new_password = ref();
-const repeat_new_password = ref();
 
 const { getCurrentUser, isLogged } = auth();
 currentUser.value = getCurrentUser();
@@ -25,6 +24,7 @@ const updateUser = async () => {
 
 const deleteUser = async (id) => {
     await deleteData(id, 'clients');
+    window.location.reload();
 };
 </script>
 
@@ -40,7 +40,6 @@ const deleteUser = async (id) => {
             </form>
 
             <form class="base-form">
-                <FormInput label="Стара парола" />
                 <FormInput label="Нова парола" v-model="new_password" />
             </form>
         </div>

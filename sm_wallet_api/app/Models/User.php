@@ -30,6 +30,6 @@ class User extends Model
 
     public function cards()
     {
-        $this->hasMany(Account::class);
+        return $this->hasMany(Account::class, 'user_id', 'id');
     }
 }
