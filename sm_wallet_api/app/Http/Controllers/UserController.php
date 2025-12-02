@@ -86,4 +86,36 @@ class UserController extends Controller
 
         return response()->json(status: 200);
     }
+
+    /**
+     * Check and validate email, return user if exists.
+     */
+    public function checkEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ], [
+            'email.required' => 'Полето е задължително',
+            'email.email' => 'Имейлът трябва да е валиден'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::where('email', $request->input('email'))
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'errors' => [
+                    'email' => ['Потребител с този имейл не е намерен']
+                ]
+            ], 422);
+        }
+
+        return response()->json($user, 200);
+    }
 }

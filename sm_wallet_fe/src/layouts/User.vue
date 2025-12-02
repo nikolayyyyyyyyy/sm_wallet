@@ -1,12 +1,55 @@
-<script setup lang="ts">
+<script setup>
 import MyCardsSection from '@/sections/MyCardsSection.vue';
 import Card from '@/components/Card.vue';
 import { auth } from '@/crud/auth';
 import { ref } from 'vue';
-import UserFooterSection from '@/sections/UserFooterSection.vue';
+import Popup from '@/components/Popup.vue';
+import FormInput from '@/components/FormInput.vue';
+import Button from '@/components/Button.vue';
 
 const { getCurrentUser } = auth();
 const user = ref(getCurrentUser());
+
+const displayAddToFavoritesPopup = ref(false);
+const userEmailToSearch = ref('');
+const errors = ref(null);
+const foundUser = ref(null);
+
+const clearForm = () => {
+    userEmailToSearch.value = '';
+    errors.value = null;
+    foundUser.value = null;
+};
+
+const searchForUser = async () => {
+    errors.value = null;
+    foundUser.value = null;
+
+    try {
+        const baseUrl = 'http://127.0.0.1:8000/api';
+        const response = await fetch(`${baseUrl}/clients/check-email`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ email: userEmailToSearch.value })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(JSON.stringify(errorData));
+        }
+
+        const userData = await response.json();
+        foundUser.value = userData;
+        errors.value = null;
+    } catch (err) {
+        errors.value = JSON.parse(err.message).errors;
+        foundUser.value = null;
+    }
+};
 </script>
 
 <template>
@@ -58,7 +101,7 @@ const user = ref(getCurrentUser());
                 <p>Вдигни баланса</p>
             </div>
 
-            <div class="user__link">
+            <div @click="displayAddToFavoritesPopup = true" class="user__link">
                 <div class="fourth">
                     <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                         <path fill="#ffd54f" d="m16 24l10 6l-4-10l8-8l-10-.032L16 2l-4 10H2l8 8l-4 10Z" />
@@ -93,6 +136,14 @@ const user = ref(getCurrentUser());
                 <p>Изпрати съобщение</p>
             </div>
         </div>
+
+        <Popup @empty-model-value="clearForm" class="add__favorites__popup" title="Намери приятели"
+            v-model="displayAddToFavoritesPopup">
+            <FormInput v-model="userEmailToSearch" label="търси по имейл" :error="errors?.email?.[0]"
+                :is-for-email="true" />
+
+            <Button @click="searchForUser" text="Намери" />
+        </Popup>
     </section>
 </template>
 
@@ -102,6 +153,15 @@ const user = ref(getCurrentUser());
     display: flex;
     flex-direction: column;
     gap: 100px;
+    margin-bottom: 32px;
+
+    :deep(.form-input) {
+        width: 50%;
+    }
+
+    button {
+        width: 200px;
+    }
 
     .section__no-cards {
         font-size: 18px;

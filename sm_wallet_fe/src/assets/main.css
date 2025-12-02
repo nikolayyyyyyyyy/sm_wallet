@@ -37,6 +37,22 @@ h2 {
 body {
   font-family: var(--ff-base);
   background-color: var(--c-backgound);
+
+  &:has(.popup.open),
+  &:has(.dialog-popup.open) {
+    overflow: hidden;
+  }
+
+
+  &:has(.dialog-popup.open):after,
+  &:has(.popup.open):after {
+    content: '';
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    background: var(--c-black);
+    opacity: .25;
+  }
 }
 
 .base-form {

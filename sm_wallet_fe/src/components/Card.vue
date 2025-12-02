@@ -59,10 +59,10 @@ defineProps({
     display: flex;
     flex-direction: column;
     gap: 14px;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--c-white);
-    width: 300px;
+    width: calc(30% - 12px);
     padding: 16px;
     border-radius: 12px;
     cursor: pointer;
