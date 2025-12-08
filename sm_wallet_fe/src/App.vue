@@ -115,9 +115,5 @@ const logout = async () => {
     width: auto;
     height: 23px;
   }
-
-  .nav-item:hover {
-    background-color: #6a29a6;
-  }
 }
 </style>

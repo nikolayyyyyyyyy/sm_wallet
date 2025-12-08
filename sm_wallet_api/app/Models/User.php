@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Account;
+use App\Models\Favorite;
 
 class User extends Model
 {
@@ -32,4 +33,10 @@ class User extends Model
     {
         return $this->hasMany(Account::class, 'user_id', 'id');
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id', 'id');
+    }
+
 }

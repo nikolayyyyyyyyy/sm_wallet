@@ -6,17 +6,22 @@ import { ref } from 'vue';
 import Popup from '@/components/Popup.vue';
 import FormInput from '@/components/FormInput.vue';
 import Button from '@/components/Button.vue';
+import UserComponent from '@/components/UserComponent.vue';
+import FormErrorMessage from '@/components/FormErrorMessage.vue';
 
 const { getCurrentUser } = auth();
 const user = ref(getCurrentUser());
 
 const displayAddToFavoritesPopup = ref(false);
-const userEmailToSearch = ref('');
+const userToSearch = ref({
+    current_user: '',
+    email: ''
+});
 const errors = ref(null);
 const foundUser = ref(null);
 
 const clearForm = () => {
-    userEmailToSearch.value = '';
+    userToSearch.value.email = '';
     errors.value = null;
     foundUser.value = null;
 };
@@ -34,16 +39,10 @@ const searchForUser = async () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ email: userEmailToSearch.value })
+            body: JSON.stringify({ email: userToSearch.value.email })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(JSON.stringify(errorData));
-        }
-
-        const userData = await response.json();
-        foundUser.value = userData;
+        foundUser.value = (await response.json());
         errors.value = null;
     } catch (err) {
         errors.value = JSON.parse(err.message).errors;
@@ -77,29 +76,6 @@ const searchForUser = async () => {
                 <p>Изпрати</p>
             </div>
 
-            <div class="user__link">
-                <div class="second">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M19 12L12 19L5 12" stroke="white" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <p>Получени</p>
-            </div>
-
-            <div class="user__link">
-                <div class="third">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 12L12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M12 19V5" stroke="white" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <p>Вдигни баланса</p>
-            </div>
 
             <div @click="displayAddToFavoritesPopup = true" class="user__link">
                 <div class="fourth">
@@ -137,12 +113,17 @@ const searchForUser = async () => {
             </div>
         </div>
 
-        <Popup @empty-model-value="clearForm" class="add__favorites__popup" title="Намери приятели"
-            v-model="displayAddToFavoritesPopup">
-            <FormInput v-model="userEmailToSearch" label="търси по имейл" :error="errors?.email?.[0]"
+        <Popup @empty-model-value="clearForm" title="Намери приятели" v-model="displayAddToFavoritesPopup">
+            <FormInput v-model="userToSearch.email" label="търси по имейл" :error="errors?.email?.[0]"
                 :is-for-email="true" />
 
-            <Button @click="searchForUser" text="Намери" />
+            <div v-if="foundUser && !foundUser.errors" class="popup__user">
+                <UserComponent :user="foundUser" />
+            </div>
+
+            <FormErrorMessage v-if="foundUser?.errors?.email" :text="foundUser.errors?.email[0]" />
+
+            <Button @click="searchForUser" class="btn" text="Намери" />
         </Popup>
     </section>
 </template>
@@ -154,6 +135,10 @@ const searchForUser = async () => {
     flex-direction: column;
     gap: 100px;
     margin-bottom: 32px;
+
+    .btn {
+        margin-top: 30px;
+    }
 
     :deep(.form-input) {
         width: 50%;

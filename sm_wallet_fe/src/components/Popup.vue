@@ -107,6 +107,7 @@ onBeforeUnmount(() => {
     box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.12);
     max-height: 90dvh;
     padding-block: 24px;
+    min-width: 450px;
 }
 
 h1 {
@@ -122,7 +123,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 5px;
     padding-inline: 24px;
 }
 

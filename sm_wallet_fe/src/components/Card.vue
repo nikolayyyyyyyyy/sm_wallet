@@ -66,6 +66,7 @@ defineProps({
     padding: 16px;
     border-radius: 12px;
     cursor: pointer;
+    min-width: 300px;
 
     .section__account_number,
     .section__interest,

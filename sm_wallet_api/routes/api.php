@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 use App\Models\User;
@@ -53,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/transactions/{id}/delete', [TransactionController::class, 'deleteTransaction']);
     Route::get('transactions', [TransactionController::class, 'getAllTransactions']);
     Route::post('/transactions', [TransactionController::class, 'storeTransaction']);
+
+    Route::post('/favorites', [FavoriteController::class, 'store_favorite']);
 });
 
 //Public route

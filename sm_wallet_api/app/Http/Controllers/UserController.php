@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Favorite;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,9 +15,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $currentUserId = $request->user()->id;
         $users = User::with('role')->get();
+
+        // Добавяме is_favorited property за всеки потребител
+        $users->each(function ($user) use ($currentUserId) {
+            $user->is_favorited = Favorite::where('user_id', $currentUserId)
+                ->where('liked_user_id', $user->id)
+                ->exists();
+        });
+
         return response()->json($users, 200);
     }
 
@@ -115,6 +125,12 @@ class UserController extends Controller
                 ]
             ], 422);
         }
+
+        // Добавяме is_favorited property
+        $currentUserId = $request->user()->id;
+        $user->is_favorited = Favorite::where('user_id', $currentUserId)
+            ->where('liked_user_id', $user->id)
+            ->exists();
 
         return response()->json($user, 200);
     }
