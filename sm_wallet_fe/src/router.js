@@ -16,6 +16,8 @@ import AllTransactionTypesPage from "./pages/admin/AllRecordsListing/AllTransact
 import AllAccountsPage from "./pages/admin/AllRecordsListing/AllAccountsPage.vue";
 import AllTransactionsPage from "./pages/admin/AllRecordsListing/AllTransactionsPage.vue";
 import FavoritePage from "./pages/user/FavoritePage.vue";
+import ChatPage from "./pages/user/ChatPage.vue";
+import MessagesInboxPage from "./pages/user/MessagesInboxPage.vue";
 
 
 const routes = [
@@ -35,7 +37,9 @@ const routes = [
     { path: '/transaction-types', component: AllTransactionTypesPage },
     { path: '/accounts', component: AllAccountsPage },
     { path: '/transactions', component: AllTransactionsPage },
-    { path: '/favorites', component: FavoritePage }
+    { path: '/favorites', component: FavoritePage },
+    { path: '/chat/:id', component: ChatPage },
+    { path: '/messages', component: MessagesInboxPage }
 ]
 
 export const router = createRouter({
