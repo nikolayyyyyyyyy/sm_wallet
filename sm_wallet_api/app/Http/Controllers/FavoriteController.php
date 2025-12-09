@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Favorite;
+use App\Models\User;
 
 class FavoriteController extends Controller
 {
@@ -20,5 +21,18 @@ class FavoriteController extends Controller
         } else {
             Favorite::create($request->all());
         }
+    }
+
+    public function getFavoriteUsers(Request $request)
+    {
+        $user_id = $request->input('user_id');
+
+        $liked_user = User::where('id', '=', $user_id)
+            ->with('favorites.liked_user')
+            ->first()
+            ->favorites
+            ->pluck('liked_user');
+
+        return response()->json($liked_user, 200);
     }
 }
