@@ -31,7 +31,11 @@ class FavoriteController extends Controller
             ->with('favorites.liked_user')
             ->first()
             ->favorites
-            ->pluck('liked_user');
+            ->pluck('liked_user')
+            ->map(function ($user) {
+                $user->is_favorited = true;
+                return $user;
+            });
 
         return response()->json($liked_user, 200);
     }

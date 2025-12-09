@@ -1,4 +1,5 @@
 <script setup>
+import FormErrorMessage from '@/components/FormErrorMessage.vue';
 import UserComponent from '@/components/UserComponent.vue';
 import { auth } from '@/crud/auth';
 import { onMounted, ref } from 'vue';
@@ -6,7 +7,6 @@ import { onMounted, ref } from 'vue';
 const { getCurrentUser } = auth();
 const current_user = getCurrentUser();
 const liked_users = ref(null);
-
 onMounted(async () => {
     liked_users.value = await (await fetch('http://127.0.0.1:8000/api/favorites-all', {
         method: 'POST',
@@ -27,9 +27,11 @@ onMounted(async () => {
                 Харесани потребители
             </h1>
 
-            <div class="section__users">
+            <div v-if="liked_users && liked_users.length > 0" class="section__users">
                 <UserComponent v-for="user in liked_users" :user :chat-icon="true" />
             </div>
+
+            <FormErrorMessage v-else text="Не сте добавили никой още." />
         </div>
     </section>
 </template>
