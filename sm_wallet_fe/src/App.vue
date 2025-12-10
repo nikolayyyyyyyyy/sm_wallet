@@ -1,50 +1,11 @@
 <script setup>
 import { auth } from './crud/auth';
-import { ref, onMounted, onUnmounted } from 'vue';
 
 const { isLogged, logoutUser } = auth();
-const unreadCount = ref(0);
-let pollInterval = null;
 
 const logout = async () => {
   await logoutUser();
 };
-
-const loadUnreadCount = async () => {
-  if (!isLogged()) {
-    unreadCount.value = 0;
-    return;
-  }
-
-  try {
-    const response = await fetch('http://127.0.0.1:8000/api/chat/unread', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      unreadCount.value = data.total_unread_count;
-    }
-  } catch (error) {
-    console.error('Error loading unread count:', error);
-  }
-};
-
-onMounted(() => {
-  loadUnreadCount();
-  // Poll for unread messages every 10 seconds
-  pollInterval = setInterval(loadUnreadCount, 10000);
-});
-
-onUnmounted(() => {
-  if (pollInterval) {
-    clearInterval(pollInterval);
-  }
-});
 </script>
 
 <template>
@@ -75,16 +36,6 @@ onUnmounted(() => {
               d="M3.26563 10.5C3.26556 10.2091 3.32896 9.92162 3.45141 9.65771C3.57387 9.39381 3.75242 9.15979 3.97463 8.972L10.9746 2.973C11.3356 2.66791 11.793 2.50052 12.2656 2.50052C12.7383 2.50052 13.1956 2.66791 13.5566 2.973L20.5566 8.972C20.7788 9.15979 20.9574 9.39381 21.0798 9.65771C21.2023 9.92162 21.2657 10.2091 21.2656 10.5V19.5C21.2656 20.0304 21.0549 20.5391 20.6798 20.9142C20.3048 21.2893 19.7961 21.5 19.2656 21.5H5.26562C4.73519 21.5 4.22648 21.2893 3.85141 20.9142C3.47634 20.5391 3.26563 20.0304 3.26563 19.5V10.5Z"
               stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-        </RouterLink>
-
-        <RouterLink v-if="isLogged()" class="nav-item nav-item--messages" to="/messages">
-          <p>Съобщения</p>
-          <div class="nav-item__icon-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-            <span v-if="unreadCount > 0" class="nav-item__badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
-          </div>
         </RouterLink>
 
         <RouterLink v-if="!isLogged()" class="nav-item" to="/login">
@@ -163,34 +114,6 @@ onUnmounted(() => {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: auto;
     height: 23px;
-    position: relative;
-
-    &--messages {
-      .nav-item__icon-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .nav-item__badge {
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          background: var(--c-red);
-          color: var(--c-white);
-          border-radius: 50%;
-          font-size: 10px;
-          font-weight: bold;
-          min-width: 18px;
-          height: 18px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2px 4px;
-          border: 2px solid var(--c-purple);
-        }
-      }
-    }
   }
 }
 </style>

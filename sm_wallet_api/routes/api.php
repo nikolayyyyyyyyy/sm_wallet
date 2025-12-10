@@ -10,7 +10,6 @@ use App\Http\Controllers\AccountTypeController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
-use App\Http\Controllers\ChatController;
 use App\Models\User;
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -58,12 +57,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/favorites-all', [FavoriteController::class, 'getFavoriteUsers']);
     Route::post('/favorites', [FavoriteController::class, 'store_favorite']);
-
-    // Chat routes
-    Route::get('/chat/messages', [ChatController::class, 'getMessages']);
-    Route::post('/chat/messages', [ChatController::class, 'sendMessage']);
-    Route::get('/chat/conversations', [ChatController::class, 'getConversations']);
-    Route::get('/chat/unread', [ChatController::class, 'getUnreadMessages']);
 });
 
 //Public route

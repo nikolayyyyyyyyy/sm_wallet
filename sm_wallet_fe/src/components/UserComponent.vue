@@ -1,7 +1,4 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import LikeStarComponent from './LikeStarComponent.vue';
-
 const props = defineProps({
     user: {
         type: Object,
@@ -12,12 +9,7 @@ const props = defineProps({
         required: false
     }
 });
-
-const router = useRouter();
-
-const navigateToChat = () => {
-    router.push(`/chat/${props.user.id}`);
-};
+import LikeStarComponent from './LikeStarComponent.vue';
 </script>
 
 <template>
@@ -42,7 +34,7 @@ const navigateToChat = () => {
             <LikeStarComponent :element-id="user.id" :is-liked="user.is_favorited" />
         </div>
 
-        <svg v-if="chatIcon" @click="navigateToChat" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <svg v-if="chatIcon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <g fill="none">
                 <path fill="url(#SVG14vC6sni)"
                     d="M10 2a8 8 0 1 1-3.613 15.14l-.121-.065l-3.645.91a.5.5 0 0 1-.62-.441v-.082l.014-.083l.91-3.644l-.063-.12a8 8 0 0 1-.83-2.887l-.025-.382L2 10a8 8 0 0 1 8-8" />
