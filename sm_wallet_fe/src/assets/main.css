@@ -1,0 +1,79 @@
+/* Base CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --font-weight-base: 300;
+  --ff-base: 'Inter';
+  --c-backgound: #0F172A;
+  --c-grayed: #1E293B;
+  --c-purple: #0F5951;
+  --c-blue: #3744AB;
+  --c-gray: #CBD5E1;
+
+  --c-black: #000000;
+  --c-white: #FFF;
+  --c-green: #25b700;
+  --c-base: #6784C1;
+  --c-red: #E40006;
+  --c-light-blue: #F0F3F9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-weight: var(--font-weight-base);
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 25px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.image-fit {
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.image-fit img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body {
+  font-family: var(--ff-base);
+  background-color: var(--c-backgound);
+
+  &:has(.popup.open),
+  &:has(.dialog-popup.open) {
+    overflow: hidden;
+  }
+
+
+  &:has(.dialog-popup.open):after,
+  &:has(.popup.open):after {
+    content: '';
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    background: var(--c-black);
+    opacity: .25;
+  }
+}
+
+.base-form {
+  padding: 32px 24px;
+  border-radius: 12px;
+  background-color: var(--c-grayed);
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
