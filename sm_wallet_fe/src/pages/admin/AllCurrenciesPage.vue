@@ -3,6 +3,8 @@ import Button from '@/components/Button.vue';
 import { del } from '@/crud/delete';
 import { get } from '@/crud/get';
 import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const currencies = ref([]);
 const { getData } = get();
@@ -14,6 +16,10 @@ const deleteCurrency = async (id) => {
 };
 
 onBeforeMount(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('login');
+    }
+
     currencies.value = await getData('currencies');
 });
 </script>

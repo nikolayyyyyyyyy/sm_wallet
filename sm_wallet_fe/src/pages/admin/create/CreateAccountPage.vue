@@ -6,6 +6,9 @@ import { ref, onMounted } from 'vue';
 import { get } from '@/crud/get';
 import { store } from '@/crud/create';
 import SuccessMessage from '@/components/SuccessMessage.vue';
+import { useRouter } from 'vue-router';
+import GoToArrow from '@/components/GoToArrow.vue';
+const router = useRouter();
 
 const currencies = ref([]);
 const accountTypes = ref([]);
@@ -37,6 +40,9 @@ const storeAccount = async () => {
 };
 
 onMounted(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('/login');
+    }
     currencies.value = (await getData('currencies'))
         .map(c => { return { id: c.id, text: c.currency }; });
 
@@ -50,8 +56,12 @@ onMounted(async () => {
 
 <template>
     <section class="section-create-account">
-        <div class="section__inner">
-            <h1 class="section__title">Добави акаунт</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави акаунт</h1>
+            </div>
 
             <form @submit.prevent="storeAccount" class="base-form">
                 <div class="section__form-top">
@@ -91,7 +101,9 @@ onMounted(async () => {
     }
 
     .section__title {
-        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         color: var(--c-gray);
     }
 
@@ -99,7 +111,7 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        margin: 0 auto;
+        align-self: center;
     }
 
     .section__form-top {

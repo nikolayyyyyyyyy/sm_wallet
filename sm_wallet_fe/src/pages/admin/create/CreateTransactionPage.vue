@@ -8,6 +8,9 @@ import { get } from '@/crud/get';
 import { onMounted, ref } from 'vue';
 import { store } from '@/crud/create';
 import FormErrorMessage from '@/components/FormErrorMessage.vue';
+import { useRouter } from 'vue-router';
+import GoToArrow from '@/components/GoToArrow.vue';
+const router = useRouter();
 
 const transactionTypes = ref(null);
 const { getData } = get();
@@ -40,6 +43,10 @@ const storeTransaction = async () => {
 };
 
 onMounted(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('login');
+    }
+
     transactionTypes.value = (await getData('transaction-types'))
         .map(t => { return { id: t.id, text: t.transaction_type }; });
 });
@@ -47,8 +54,12 @@ onMounted(async () => {
 
 <template>
     <section class="section-create-transaction">
-        <div class="section__inner">
-            <h1 class="section__title">Добави Транзакция</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави Транзакция</h1>
+            </div>
 
             <form @submit.prevent="storeTransaction" class="base-form">
                 <div class="section__form-top">
@@ -87,16 +98,16 @@ onMounted(async () => {
     }
 
     .section__title {
-        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         color: var(--c-gray);
     }
 
     form {
-        width: fit-content;
-        margin: auto;
         display: flex;
         flex-direction: column;
         gap: 20px;
+        align-self: center;
     }
 
     .section__form-top {

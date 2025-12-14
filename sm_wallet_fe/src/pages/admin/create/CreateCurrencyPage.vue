@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import { store } from '@/crud/create';
 import SuccesMessage from '@/components/SuccessMessage.vue';
+import { useRouter } from 'vue-router';
+import GoToArrow from '@/components/GoToArrow.vue';
+const router = useRouter();
 
 const currencyData = ref({
     currency: ''
@@ -23,12 +26,22 @@ const storeCurrency = async () => {
         successMessage.value = '';
     }
 }
+
+onMounted(() => {
+    if (!localStorage.getItem('token')) {
+        router.push('/login');
+    }
+});
 </script>
 
 <template>
     <section class="section-create-currency">
-        <div class="section__inner">
-            <h1 class="section__title">Добави Валута</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави Валута</h1>
+            </div>
 
             <form @submit.prevent="storeCurrency" class="base-form">
                 <FormInput label="Валута" v-model="currencyData.currency" :error="error" />
@@ -52,7 +65,9 @@ const storeCurrency = async () => {
     }
 
     .section__title {
-        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         color: var(--c-gray);
     }
 
@@ -61,7 +76,7 @@ const storeCurrency = async () => {
         flex-direction: column;
         gap: 24px;
         width: 300px;
-        margin: 0 auto;
+        align-self: center;
     }
 }
 </style>

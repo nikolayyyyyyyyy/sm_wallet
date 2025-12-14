@@ -2,7 +2,7 @@
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import { auth } from '@/crud/auth';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -24,6 +24,13 @@ const handleRegister = async () => {
         errors.value = JSON.parse(err.message).errors;
     }
 };
+
+
+onMounted(() => {
+    if (localStorage.getItem('token')) {
+        router.push('/');
+    }
+});
 </script>
 
 <template>

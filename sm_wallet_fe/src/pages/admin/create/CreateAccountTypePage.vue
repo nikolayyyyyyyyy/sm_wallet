@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import { store } from '@/crud/create';
 import SuccesMessage from '@/components/SuccessMessage.vue';
+import { useRouter } from 'vue-router';
+import GoToArrow from '@/components/GoToArrow.vue';
+const router = useRouter();
 
 const accountTypeData = ref({
     account_type: ''
@@ -23,12 +26,22 @@ const storeAccountType = async () => {
         successMessage.value = '';
     }
 }
+
+onMounted(() => {
+    if (!localStorage.getItem('token')) {
+        router.push('/login');
+    }
+});
 </script>
 
 <template>
     <section class="section-create-account-type">
-        <div class="section__inner">
-            <h1 class="section__title">Добави Тип Акаунт</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави Тип Акаунт</h1>
+            </div>
 
             <form @submit.prevent="storeAccountType" class="base-form">
                 <FormInput label="Тип Акаунт" v-model="accountTypeData.account_type" :error="error" />
@@ -52,7 +65,9 @@ const storeAccountType = async () => {
     }
 
     .section__title {
-        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         color: var(--c-gray);
     }
 
@@ -61,7 +76,7 @@ const storeAccountType = async () => {
         flex-direction: column;
         gap: 24px;
         width: 300px;
-        margin: 0 auto;
+        align-self: center;
     }
 }
 </style>

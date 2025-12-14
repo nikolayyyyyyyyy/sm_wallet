@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import FormInput from '@/components/FormInput.vue';
 import Button from '@/components/Button.vue';
 import SuccessMessage from '@/components/SuccessMessage.vue';
 import { store } from '@/crud/create';
-
+import { useRouter } from 'vue-router';
+import GoToArrow from '@/components/GoToArrow.vue';
+const router = useRouter();
 const transactionTypeData = ref({
     transaction_type: ''
 });
@@ -23,12 +25,22 @@ const storeTransactionType = async () => {
         successMessage.value = '';
     }
 }
+
+onMounted(() => {
+    if (!localStorage.getItem('token')) {
+        router.push('/login');
+    }
+});
 </script>
 
 <template>
     <section class="section-create-transaction-type">
-        <div class="section__inner">
-            <h1 class="section__title">Добави тип транзакция</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави тип транзакция</h1>
+            </div>
 
             <form @submit.prevent="storeTransactionType" class="base-form">
                 <FormInput v-model="transactionTypeData.transaction_type" label="Име на тип транзакция" :error />
@@ -52,8 +64,9 @@ const storeTransactionType = async () => {
     }
 
     .section__title {
-        text-align: center;
         color: var(--c-gray);
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
     }
 
     form {
@@ -61,7 +74,7 @@ const storeTransactionType = async () => {
         flex-direction: column;
         gap: 24px;
         width: 300px;
-        margin: 0 auto;
+        align-self: center;
     }
 }
 </style>

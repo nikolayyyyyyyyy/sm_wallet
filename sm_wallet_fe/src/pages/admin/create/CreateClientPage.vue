@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
+import GoToArrow from '@/components/GoToArrow.vue';
 import SelectComponent from '@/components/SelectComponent.vue';
 import SuccessMessage from '@/components/SuccessMessage.vue';
-
 import { store } from '@/crud/create';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const clientData = ref({
     name: '',
@@ -17,7 +18,6 @@ const clientData = ref({
     role_id: ''
 });
 const errors = ref(null);
-const router = useRouter();
 const { create } = store();
 const successMessage = ref('');
 
@@ -42,8 +42,12 @@ onMounted(() => {
 
 <template>
     <section class="section-create-client">
-        <div class="section__inner">
-            <h1 class="section__title">Добави Клиент</h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow nav-to="/" :reversed="true" />
+
+                <h1>Добави Клиент</h1>
+            </div>
 
             <form @submit.prevent="storeClient" class="base-form">
                 <div class="form-names">
@@ -72,31 +76,12 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .section-create-client {
-    margin-block: 10px;
-
-    .radio-inputs {
-        display: flex;
-        gap: 10px;
-
-        .radio {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--c-base);
-            border: 1px solid #475569;
-            background: #334155;
-            border-radius: 8px;
-            padding: 13px;
-            cursor: pointer;
-            flex-grow: 1;
-
-            .radio-text {
-                font-weight: 600;
-            }
-        }
-    }
+    margin-block: 32px;
 
     .section__title {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         color: var(--c-gray);
     }
 
@@ -109,14 +94,13 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         gap: 24px;
-        align-items: center;
     }
 
     form {
         display: flex;
         flex-direction: column;
         gap: 24px;
-        width: fit-content
+        align-self: center;
     }
 }
 </style>

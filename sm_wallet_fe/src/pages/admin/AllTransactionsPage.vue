@@ -3,7 +3,8 @@ import Button from '@/components/Button.vue';
 import { del } from '@/crud/delete';
 import { get } from '@/crud/get';
 import { onMounted, ref } from 'vue';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const transactions = ref([]);
 const { getData } = get();
 const { deleteData } = del();
@@ -14,6 +15,9 @@ const deleteTransaction = async (id) => {
 };
 
 onMounted(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('login');
+    }
     transactions.value = await getData('transactions');
 });
 </script>

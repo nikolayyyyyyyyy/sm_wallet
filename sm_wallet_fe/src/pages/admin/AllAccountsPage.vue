@@ -2,7 +2,9 @@
 import Button from '@/components/Button.vue';
 import { del } from '@/crud/delete';
 import { get } from '@/crud/get';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const accounts = ref([]);
 const { getData } = get();
@@ -13,7 +15,11 @@ const deleteAccount = async (id) => {
     accounts.value = accounts.value.filter(a => a.id != id);
 };
 
-onMounted(async () => {
+onBeforeMount(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('login');
+    }
+
     accounts.value = await getData('accounts');
 });
 </script>

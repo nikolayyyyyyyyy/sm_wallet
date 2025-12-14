@@ -4,6 +4,8 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 import UserComponent from '@/components/UserComponent.vue';
 import { auth } from '@/crud/auth';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const { getCurrentUser } = auth();
 const current_user = getCurrentUser();
@@ -11,6 +13,10 @@ const liked_users = ref(null);
 const is_loading = ref(false);
 
 onMounted(async () => {
+    if (!localStorage.getItem('token')) {
+        router.push('/login');
+    }
+
     is_loading.value = true;
     liked_users.value = await (await fetch('http://127.0.0.1:8000/api/favorites-all', {
         method: 'POST',

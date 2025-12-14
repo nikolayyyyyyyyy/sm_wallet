@@ -1,7 +1,7 @@
 <script setup>
 import FormInput from '@/components/FormInput.vue';
 import Button from '@/components/Button.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import FormErrorMessage from '@/components/FormErrorMessage.vue';
 import { auth } from '@/crud/auth';
@@ -32,6 +32,12 @@ const handleLogin = async () => {
         }
     }
 };
+
+onMounted(() => {
+    if (localStorage.getItem('token')) {
+        router.push('/');
+    }
+});
 </script>
 
 <template>
