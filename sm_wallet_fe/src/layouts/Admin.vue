@@ -6,21 +6,21 @@ import { RouterLink } from 'vue-router';
 <template>
     <section class="section__admin">
         <div class="base-form admin-panel-create">
-            <RouterLink class="panel-item" to="/create-client">Добави Клиент</RouterLink>
-            <RouterLink class="panel-item" to="/create-currency">Добави Валута</RouterLink>
-            <RouterLink class="panel-item" to="/create-account-type">Добави Тип Акаунт</RouterLink>
-            <RouterLink class="panel-item" to="/create-transaction-type">Добави Тип Транзакция</RouterLink>
-            <RouterLink class="panel-item" to="/create-account">Добави Карта</RouterLink>
-            <RouterLink class="panel-item" to="/create-transaction">Добави Транзакция</RouterLink>
+            <RouterLink class="panel-item" to="/create-client">Добави клиент</RouterLink>
+            <RouterLink class="panel-item" to="/create-currency">Добави валута</RouterLink>
+            <RouterLink class="panel-item" to="/create-account-type">Добави вид сметка</RouterLink>
+            <RouterLink class="panel-item" to="/create-transaction-type">Добави вид транзакция</RouterLink>
+            <RouterLink class="panel-item" to="/create-account">Добави карта</RouterLink>
+            <RouterLink class="panel-item" to="/create-transaction">Добави транзакция</RouterLink>
         </div>
 
         <div class="base-form admin-panel-get">
-            <RouterLink class="panel-item" to="/clients">Всички Клиенти</RouterLink>
-            <RouterLink class="panel-item" to="/currencies">Всички Валути</RouterLink>
-            <RouterLink class="panel-item" to="/account-types">Всички Типове Акаунти</RouterLink>
-            <RouterLink class="panel-item" to="/transaction-types">Всички Типове Транзакции</RouterLink>
-            <RouterLink class="panel-item" to="/accounts">Всички Карти</RouterLink>
-            <RouterLink class="panel-item" to="/transactions">Всички Транзакции</RouterLink>
+            <RouterLink class="panel-item" to="/clients">Клиенти</RouterLink>
+            <RouterLink class="panel-item" to="/currencies">Валути</RouterLink>
+            <RouterLink class="panel-item" to="/account-types">Видове сметки</RouterLink>
+            <RouterLink class="panel-item" to="/transaction-types">Видове Транзакции</RouterLink>
+            <RouterLink class="panel-item" to="/accounts">Сметки</RouterLink>
+            <RouterLink class="panel-item" to="/transactions">Транзакции</RouterLink>
         </div>
     </section>
 </template>
@@ -44,11 +44,15 @@ import { RouterLink } from 'vue-router';
     .panel-item {
         background-color: var(--c-white);
         padding: 13px;
-        border-radius: 9999px;
+        border-radius: 10px;
         text-decoration: none;
         color: var(--c-black);
         font-weight: 900;
         text-align: center;
+    }
+
+    .panel-item:hover {
+        background: #f9eded;
     }
 }
 </style>

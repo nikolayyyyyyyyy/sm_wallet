@@ -17,7 +17,8 @@ defineProps({
     options: {
         type: Array,
         required: true
-    }, error: {
+    },
+    error: {
         type: String,
         required: false
     },

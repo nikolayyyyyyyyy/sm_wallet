@@ -6,7 +6,6 @@ const isAuthenticated = ref(false);
 const user = ref({});
 
 function isLogged() {
-    console.log(isAuthenticated.value);
     return isAuthenticated.value;
 }
 

@@ -2,6 +2,7 @@
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import GoToArrow from '@/components/GoToArrow.vue';
+import LoadingComponent from '@/components/LoadingComponent.vue';
 import { del } from '@/crud/delete';
 import { get } from '@/crud/get';
 import SearchFieldSection from '@/sections/SearchFieldSection.vue';
@@ -12,6 +13,7 @@ const router = useRouter();
 const clients = ref([]);
 const { getData } = get();
 const { deleteData } = del();
+const is_loading = ref(false);
 
 const deleteClient = async (id) => {
     await deleteData(id, 'clients');
@@ -22,7 +24,9 @@ onMounted(async () => {
     if (!localStorage.getItem('token')) {
         router.push('login');
     }
+    is_loading.value = true;
     clients.value = await getData('clients');
+    is_loading.value = false;
 });
 
 </script>
@@ -33,7 +37,7 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow :reversed="true" nav-to="/" />
 
-                <h1>Всички КЛиенти</h1>
+                <h1>Клиенти</h1>
             </div>
 
             <SearchFieldSection>
@@ -63,7 +67,7 @@ onMounted(async () => {
                 </div>
             </SearchFieldSection>
 
-            <div class="section__clients">
+            <div v-if="is_loading == false" class="section__clients">
                 <div v-for="client in clients" class="section__client base-form">
                     <p>Име: {{ client.name }}</p>
                     <p>Презиме: {{ client.middle_name ? client.middle_name : 'Не е въведено' }}</p>
@@ -78,6 +82,8 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
+
+            <LoadingComponent v-else class="loading" />
         </div>
     </section>
 </template>
@@ -85,6 +91,10 @@ onMounted(async () => {
 <style scoped lang="scss">
 .section-clients {
     margin-block: 32px;
+
+    .loading {
+        align-self: center;
+    }
 
     .section__search__name {
         color: var(--c-white);

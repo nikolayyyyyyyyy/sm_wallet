@@ -1,15 +1,17 @@
 <script setup>
 import { auth } from '../crud/auth';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const { isLogged, logoutUser } = auth();
 
 const logout = async () => {
     await logoutUser();
+    router.push('/login');
 };
 </script>
 
 <template>
-    <nav class="nav">
+    <nav class="nav shell">
         <div class="nav-auth-links">
             <RouterLink v-if="isLogged()" class="nav-item" to="/my-profile">
                 <p>Профил</p>
@@ -17,10 +19,10 @@ const logout = async () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
                     <path
                         d="M19.2188 21.5V19.5C19.2188 18.4391 18.7973 17.4217 18.0472 16.6716C17.297 15.9214 16.2796 15.5 15.2188 15.5H9.21875C8.15788 15.5 7.14047 15.9214 6.39032 16.6716C5.64018 17.4217 5.21875 18.4391 5.21875 19.5V21.5"
-                        stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     <path
                         d="M12.2188 11.5C14.4279 11.5 16.2188 9.70914 16.2188 7.5C16.2188 5.29086 14.4279 3.5 12.2188 3.5C10.0096 3.5 8.21875 5.29086 8.21875 7.5C8.21875 9.70914 10.0096 11.5 12.2188 11.5Z"
-                        stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </RouterLink>
 
@@ -56,8 +58,6 @@ const logout = async () => {
 
         <div class="nav-logout">
             <RouterLink v-if="isLogged()" @click="logout" class="nav-item logout" to="/login">
-                <p>Изход</p>
-
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-logout">
@@ -66,6 +66,8 @@ const logout = async () => {
                     <path d="M9 12h12l-3 -3" />
                     <path d="M18 15l3 -3" />
                 </svg>
+
+                <p>Изход</p>
             </RouterLink>
         </div>
     </nav>
@@ -75,8 +77,8 @@ const logout = async () => {
 .nav {
     display: flex;
     justify-content: space-between;
-    background-color: var(--c-grayed);
-    padding: 15px 20px;
+    background-color: var(--c-base);
+    padding-block: 10px;
     border-bottom: 1px solid #334155;
 
     .nav-auth-links {
@@ -90,13 +92,19 @@ const logout = async () => {
         gap: 3px;
         padding: 5px;
         border-radius: 5px;
-        background-color: var(--c-purple);
+        background-color: var(--c-white);
         text-decoration: none;
-        color: var(--c-white);
-        font-family: var(--ff-base);
+        color: var(--c-black);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        width: auto;
-        height: 23px;
+    }
+
+    .nav-item:hover {
+        background: #f9eded;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 18px;
     }
 }
 </style>

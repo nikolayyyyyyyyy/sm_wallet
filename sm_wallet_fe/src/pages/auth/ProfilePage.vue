@@ -35,9 +35,7 @@ onMounted(() => {
     <section class="section-profile">
         <div class="section__inner shell">
             <div class="section__title">
-                <RouterLink to="/">
-                    <GoToArrow :reversed="true" />
-                </RouterLink>
+                <GoToArrow nav-to="/" :reversed="true" />
 
                 <h1>Моят Профил</h1>
             </div>

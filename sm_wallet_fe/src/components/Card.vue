@@ -62,7 +62,8 @@ defineProps({
     font-size: 14px;
     font-weight: 400;
     color: var(--c-white);
-    width: calc(30% - 12px);
+    flex: 0 0 calc((100% - 40px) / 4);
+    box-sizing: border-box;
     padding: 16px;
     border-radius: 12px;
     cursor: pointer;

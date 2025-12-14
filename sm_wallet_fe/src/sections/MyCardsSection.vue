@@ -30,8 +30,14 @@ const props = defineProps({
 
     .section__cards {
         display: flex;
-        gap: 24px;
+        gap: 20px;
         flex-wrap: wrap;
+        align-items: stretch;
+    
+        & > * {
+            flex: 0 0 calc((100% - 60px) / 4);
+            box-sizing: border-box;
+        }
     }
 
     .section__head {
