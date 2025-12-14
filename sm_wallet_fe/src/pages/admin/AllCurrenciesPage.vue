@@ -19,7 +19,7 @@ onBeforeMount(async () => {
 </script>
 <template>
     <section class="section-currencies">
-        <div class="section__inner">
+        <div class="section__inner shell">
             <div class="section__currency" v-for="currency in currencies">
                 <div class="section__content">
                     <p class="currency__title">Валута:</p>
@@ -37,13 +37,12 @@ onBeforeMount(async () => {
 
 <style scoped lang="scss">
 .section-currencies {
-    margin-top: 50px;
+    margin-block: 32px;
 
     .section__inner {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 50px;
+        gap: 20px;
     }
 
     .section__currency {
@@ -52,7 +51,8 @@ onBeforeMount(async () => {
         gap: 24px;
         background-color: var(--c-grayed);
         padding: 20px;
-        width: 400px;
+        flex: 0 0 calc((100% - 40px) / 3);
+        box-sizing: border-box;
         border-radius: 15px;
         color: var(--c-gray);
     }

@@ -28,12 +28,7 @@ const storeAccount = async () => {
     try {
         await create(accoutData.value, 'accounts');
         errors.value = {};
-        accoutData.value.account_number = '';
-        accoutData.value.amount = '';
-        accoutData.value.interest = '';
-        accoutData.value.currency_id = '';
-        accoutData.value.account_type_id = '';
-        accoutData.value.user_id = '';
+        Object.keys(accoutData.value).forEach(k => accoutData.value[k] = '');
         successMessage.value = 'Акаунтът е създаден успешно!';
     } catch (err) {
         errors.value = JSON.parse(err.message).errors;

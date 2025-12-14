@@ -8,6 +8,7 @@ import FormInput from '@/components/FormInput.vue';
 import Button from '@/components/Button.vue';
 import UserComponent from '@/components/UserComponent.vue';
 import FormErrorMessage from '@/components/FormErrorMessage.vue';
+import LoadingComponent from '@/components/LoadingComponent.vue';
 
 const { getCurrentUser } = auth();
 const user = ref(getCurrentUser());
@@ -26,11 +27,13 @@ const clearForm = () => {
     foundUser.value = null;
 };
 
+const is_loading = ref(false);
 const searchForUser = async () => {
     errors.value = null;
     foundUser.value = null;
 
     try {
+        is_loading.value = true;
         const baseUrl = 'http://127.0.0.1:8000/api';
         const response = await fetch(`${baseUrl}/clients/check-email`, {
             method: 'POST',
@@ -48,6 +51,7 @@ const searchForUser = async () => {
         errors.value = JSON.parse(err.message).errors;
         foundUser.value = null;
     }
+    is_loading.value = false;
 };
 </script>
 
@@ -117,9 +121,11 @@ const searchForUser = async () => {
             <FormInput v-model="userToSearch.email" label="търси по имейл" :error="errors?.email?.[0]"
                 :is-for-email="true" />
 
-            <div v-if="foundUser && !foundUser.errors" class="popup__user">
+            <div v-if="foundUser && !foundUser.errors && is_loading == false" class="popup__user">
                 <UserComponent :user="foundUser" />
             </div>
+
+            <LoadingComponent v-if="is_loading && !foundUser?.errors" />
 
             <FormErrorMessage v-if="foundUser?.errors?.email" :text="foundUser.errors?.email[0]" />
 

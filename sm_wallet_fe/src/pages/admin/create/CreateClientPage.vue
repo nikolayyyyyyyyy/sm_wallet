@@ -25,12 +25,7 @@ const storeClient = async () => {
     try {
         await create(clientData.value, 'clients');
         errors.value = [];
-        clientData.value.name = '';
-        clientData.value.middle_name = '';
-        clientData.value.last_name = '';
-        clientData.value.email = '';
-        clientData.value.password = '';
-        clientData.value.role_id = '';
+        Object.keys(clientData.value).forEach(k => clientData.value[k] = '');
         successMessage.value = 'Клиентът е създаден успешно!'
     } catch (err) {
         errors.value = JSON.parse(err.message).errors;

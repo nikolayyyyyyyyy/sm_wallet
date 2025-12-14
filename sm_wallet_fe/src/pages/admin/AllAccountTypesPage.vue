@@ -21,13 +21,15 @@ onMounted(async () => {
 
 <template>
     <section class="section-account-types">
-        <div v-for="account_type in account_types" class="section__account__type base-form">
-            <p class="section__title">Тип на акаунт: {{ account_type.account_type }}</p>
+        <div class="section__inner shell">
+            <div v-for="account_type in account_types" class="section__account__type base-form">
+                <p class="section__title">Тип на акаунт: {{ account_type.account_type }}</p>
 
-            <div class="section__buttons">
-                <Button text="Промени" />
+                <div class="section__buttons">
+                    <Button text="Промени" />
 
-                <Button text="Изтрий" @click.prevent="deleteAccountType(account_type.id)" :delete_btn="true" />
+                    <Button text="Изтрий" @click.prevent="deleteAccountType(account_type.id)" :delete_btn="true" />
+                </div>
             </div>
         </div>
     </section>
@@ -35,17 +37,20 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .section-account-types {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 50px;
+    margin-block: 32px;
+
+    .section__inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
 
     .section__account__type {
         display: flex;
         flex-direction: column;
         gap: 24px;
-        width: 400px;
+        flex: 0 0 calc((100% - 40px) / 3);
+        box-sizing: border-box;
     }
 
     .section__title {

@@ -24,6 +24,19 @@
   font-weight: var(--font-weight-base);
 }
 
+.shell {
+  max-width: 1512px;
+  padding-inline: 24px;
+  margin: 0 auto;
+  position: relative;
+}
+
+@media screen and (max-width: 767px) {
+  .shell {
+    padding-inline: 24px;
+  }
+}
+
 h1 {
   font-weight: 700;
   font-size: 25px;

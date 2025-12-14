@@ -1,5 +1,6 @@
 <script setup>
 import FormErrorMessage from '@/components/FormErrorMessage.vue';
+import LoadingComponent from '@/components/LoadingComponent.vue';
 import UserComponent from '@/components/UserComponent.vue';
 import { auth } from '@/crud/auth';
 import { onMounted, ref } from 'vue';
@@ -7,7 +8,10 @@ import { onMounted, ref } from 'vue';
 const { getCurrentUser } = auth();
 const current_user = getCurrentUser();
 const liked_users = ref(null);
+const is_loading = ref(false);
+
 onMounted(async () => {
+    is_loading.value = true;
     liked_users.value = await (await fetch('http://127.0.0.1:8000/api/favorites-all', {
         method: 'POST',
         headers: {
@@ -17,6 +21,7 @@ onMounted(async () => {
         },
         body: JSON.stringify({ user_id: current_user.id })
     })).json();
+    is_loading.value = false;
 });
 </script>
 
@@ -27,11 +32,13 @@ onMounted(async () => {
                 Харесани потребители
             </h1>
 
-            <div v-if="liked_users && liked_users.length > 0" class="section__users">
+            <div v-if="liked_users" class="section__users">
                 <UserComponent v-for="user in liked_users" :user :chat-icon="true" />
             </div>
 
-            <FormErrorMessage v-else text="Не сте добавили никой още." />
+            <LoadingComponent v-if="is_loading" />
+
+            <FormErrorMessage v-if="is_loading == false && liked_users != []" text="Не сте добавили никой още." />
         </div>
     </section>
 </template>
@@ -40,6 +47,18 @@ onMounted(async () => {
 .section-favorites {
     position: relative;
     margin-block: 32px;
+
+    .loading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--c-gray);
+        font-size: 18px;
+    }
+
+    .loading_icon {
+        width: 50px !important;
+    }
 
     .section__inner {
         display: flex;

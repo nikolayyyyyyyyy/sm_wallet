@@ -20,17 +20,19 @@ onMounted(async () => {
 
 <template>
     <section class="section-clients">
-        <div v-for="client in clients" class="section__client base-form">
-            <p>Име: {{ client.name }}</p>
-            <p>Презиме: {{ client.middle_name ? client.middle_name : 'Не е въведено' }}</p>
-            <p>Фамилия: {{ client.last_name ? client.last_name : 'Не е въведено' }}</p>
-            <p>Имейл: {{ client.email }}</p>
-            <p>Роля: {{ client.role.role_name }}</p>
+        <div class="section__shell shell">
+            <div v-for="client in clients" class="section__client base-form">
+                <p>Име: {{ client.name }}</p>
+                <p>Презиме: {{ client.middle_name ? client.middle_name : 'Не е въведено' }}</p>
+                <p>Фамилия: {{ client.last_name ? client.last_name : 'Не е въведено' }}</p>
+                <p>Имейл: {{ client.email }}</p>
+                <p>Роля: {{ client.role.role_name }}</p>
 
-            <div class="section__buttons">
-                <Button text="Промени" />
+                <div class="section__buttons">
+                    <Button text="Промени" />
 
-                <Button text=" Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
+                    <Button text=" Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
+                </div>
             </div>
         </div>
     </section>
@@ -38,17 +40,20 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .section-clients {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
     margin-block: 32px;
+
+    .section__shell {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
 
     .section__client {
         display: flex;
         flex-direction: column;
         gap: 24px;
-        width: 400px;
+        flex: 0 0 calc((100% - 40px) / 3);
+        box-sizing: border-box;
         color: var(--c-gray);
         font-size: 20px;
         font-weight: 500;
