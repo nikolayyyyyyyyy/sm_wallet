@@ -7,12 +7,16 @@ defineProps({
     delete_btn: {
         type: Boolean,
         required: false
+    },
+    type: {
+        type: String,
+        required: false
     }
 });
 </script>
 
 <template>
-    <button class="btn" :class="{ 'btn--delete': delete_btn }">
+    <button class="btn" :type :class="{ 'btn--delete': delete_btn }">
         {{ text }}
     </button>
 </template>

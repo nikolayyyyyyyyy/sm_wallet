@@ -76,9 +76,11 @@ onMounted(async () => {
                     <p>Роля: {{ client.role.role_name }}</p>
 
                     <div class="section__buttons">
-                        <Button text="Промени" />
+                        <RouterLink class="btn_link" :to="{ name: 'clients.update', params: { id: client.id } }">
+                            <Button text="Промени" />
+                        </RouterLink>
 
-                        <Button text=" Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
+                        <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
                     </div>
                 </div>
             </div>
@@ -137,6 +139,10 @@ onMounted(async () => {
         margin-top: auto;
         display: flex;
         gap: 20px;
+    }
+
+    .btn_link {
+        width: 100%;
     }
 }
 </style>

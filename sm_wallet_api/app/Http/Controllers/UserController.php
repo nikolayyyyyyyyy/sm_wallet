@@ -70,6 +70,15 @@ class UserController extends Controller
         return response()->json(status: 200);
     }
 
+    public function getUser(string $id)
+    {
+        $user = User::where('id', '=', $id)
+            ->with('role')
+            ->first();
+
+        return response()->json($user, 200);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -118,5 +127,47 @@ class UserController extends Controller
             ->exists();
 
         return response()->json($user, 200);
+    }
+
+    /**
+     * Update the specified user.
+     */
+    public function updateUser(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:20|min:1',
+            'middle_name' => 'nullable|min:1|max:20',
+            'last_name' => 'nullable|min:1|max:20',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role_id' => 'required'
+        ], [
+            'name' => 'Полето е задължително',
+            'middle_name' => 'Полето трябва да е до 20 символа',
+            'last_name' => 'Полето трябва да е до 20 символа',
+            'email.required' => 'Полето е задължително',
+            'email.unique' => 'Има запис с този имейл',
+            'role_id' => 'Полето е задължително'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->name = $request->input('name');
+        $user->middle_name = $request->input('middle_name') ?? '';
+        $user->last_name = $request->input('last_name') ?? '';
+        $user->email = $request->input('email');
+        $user->role_id = $request->input('role_id');
+
+        $user->save();
+
+        return response()->json(status: 200);
     }
 }

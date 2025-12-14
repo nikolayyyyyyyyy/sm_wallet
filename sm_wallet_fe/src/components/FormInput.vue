@@ -25,6 +25,10 @@ defineProps({
     isForPassword: {
         type: Boolean,
         default: false
+    },
+    placeholder: {
+        type: String,
+        required: false
     }
 });
 
@@ -57,7 +61,7 @@ const model = defineModel();
             </svg>
         </label>
 
-        <input :type="inputType" v-model="model">
+        <input :type="inputType" v-model="model" :placeholder>
 
         <FormErrorMessage v-if="error" :text="error" />
     </div>
