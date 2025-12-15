@@ -77,7 +77,7 @@ const logout = async () => {
 .nav {
     display: flex;
     justify-content: space-between;
-    background-color: var(--c-base);
+    background-color: var(--c-blue);
     padding-block: 10px;
     border-bottom: 1px solid #334155;
 
