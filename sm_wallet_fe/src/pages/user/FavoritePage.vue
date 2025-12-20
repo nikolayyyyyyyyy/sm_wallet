@@ -1,5 +1,6 @@
 <script setup>
 import FormErrorMessage from '@/components/FormErrorMessage.vue';
+import GoToArrow from '@/components/GoToArrow.vue';
 import LoadingComponent from '@/components/LoadingComponent.vue';
 import UserComponent from '@/components/UserComponent.vue';
 import { auth } from '@/crud/auth';
@@ -33,26 +34,38 @@ onMounted(async () => {
 
 <template>
     <section class="section-favorites">
-        <div class="section__inner">
-            <h1 class="section__title">
-                Харесани потребители
-            </h1>
+        <div class="section__inner shell">
+            <div class="section__title">
+                <GoToArrow :reversed="true" nav-to="/"/>
 
-            <div v-if="liked_users" class="section__users">
-                <UserComponent v-for="user in liked_users" :user :chat-icon="true" />
+                <h1>
+                    Харесани потребители
+                </h1>
             </div>
+            
+            <div class="section__content">
+                <div v-if="liked_users" class="section__users">
+                    <UserComponent v-for="user in liked_users" :user :chat-icon="true" />
+                </div>
 
-            <LoadingComponent v-if="is_loading" />
+                <LoadingComponent v-if="is_loading" />
 
-            <FormErrorMessage v-if="is_loading == false && liked_users != []" text="Не сте добавили никой още." />
+                <FormErrorMessage v-if="is_loading == false && liked_users?.length == 0" text="Не сте добавили никой още." />
+            </div>
         </div>
     </section>
 </template>
 
 <style scoped lang="scss">
 .section-favorites {
-    position: relative;
     margin-block: 32px;
+
+    .section__inner{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
 
     .loading {
         display: flex;
@@ -66,18 +79,18 @@ onMounted(async () => {
         width: 50px !important;
     }
 
-    .section__inner {
+    .section__content {
         display: flex;
         flex-direction: column;
         gap: 24px;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
     }
 
     .section__title {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         color: var(--c-gray);
-        text-align: center;
+        width: 100%;
     }
 
     .section__users {

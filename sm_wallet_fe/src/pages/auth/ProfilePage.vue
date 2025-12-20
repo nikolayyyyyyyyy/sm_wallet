@@ -2,6 +2,7 @@
 import Button from '@/components/Button.vue';
 import FormInput from '@/components/FormInput.vue';
 import GoToArrow from '@/components/GoToArrow.vue';
+import SuccessMessage from '@/components/SuccessMessage.vue';
 import { auth } from '@/crud/auth';
 import { del } from '@/crud/delete';
 import { update } from '@/crud/update';
@@ -21,6 +22,8 @@ const { updateUser } = update();
 const is_fetching = ref(false);
 const file_upload = ref(null);
 const file_image_url = ref(currentUser.value.profile_photo);
+const errors = ref();
+const success = ref();
 
 const updateUserData = async () => {
     if (is_fetching.value) return;
@@ -40,7 +43,18 @@ const updateUserData = async () => {
         formData.append('profile_picture', file_upload.value);
     }
 
-    await updateUser(formData, 'clients', currentUser.value.id);
+    try{
+        await updateUser(formData, 'clients', currentUser.value.id);
+        errors.value = [];
+        success.value = true;
+
+        setTimeout(() => {
+            success.value = false;
+        }, 3000);
+    }catch(err){
+        errors.value = JSON.parse(err.message).errors;
+        success.value = false; 
+    }
     is_fetching.value = false;
 };
 
@@ -76,7 +90,7 @@ onMounted(() => {
             <div class="section__content">
                 <div class="section__image-upload">
                     <figure class="section__image image-fit">
-                        <img :src="file_image_url != null ? file_image_url : '../../../public/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'" />
+                        <img :src="file_image_url != null ? file_image_url : '../../../public/avatar.png'" />
                     </figure>
 
 
@@ -98,12 +112,12 @@ onMounted(() => {
                 </div>
 
                 <form class="base-form">
-                    <FormInput label="име" v-model="currentUser.name" />
-                    <FormInput label="презиме" v-model="currentUser.middle_name" />
-                    <FormInput label="фамилия" v-model="currentUser.last_name" />
+                    <FormInput label="име" v-model="currentUser.name" :error="errors?.name?.[0]"/>
+                    <FormInput label="презиме" v-model="currentUser.middle_name" :error="errors?.middle_name?.[0]"/>
+                    <FormInput label="фамилия" v-model="currentUser.last_name" :error="errors?.last_name?.[0]"/>
 
-                    <FormInput v-if="currentUser?.email" label="Имейл" v-model="currentUser.email" />
-                    <FormInput label="Нова парола" v-model="new_password" />
+                    <FormInput v-if="currentUser.email != null" label="Имейл" v-model="currentUser.email" :error="errors?.email?.[0]"/>
+                    <FormInput label="Нова парола" v-model="new_password" :error="errors?.password?.[0]"/>
 
                     <div class="section__buttons">
                         <Button @click.prevent="updateUserData" text="Промени" />
@@ -112,6 +126,10 @@ onMounted(() => {
                     </div>
                 </form>
             </div>
+            
+            <div v-if="success" class="success_message__wrapper">
+                <SuccessMessage class="success_message" text="Успешно променихте профила си." />
+            </div>
         </div>
     </section>
 </template>
@@ -119,6 +137,22 @@ onMounted(() => {
 <style scoped lang="scss">
 .section-profile {
     margin-block: 32px;
+
+    .success_message{
+        font-size: 22px;
+    }
+
+    .success_message__wrapper{
+        padding: 10px;
+        background: var(--c-green);
+        width: fit-content;
+        border-radius: 8px;
+        align-self: center;
+    }
+
+    :deep(.success_message){
+        color: var(--c-white);
+    }  
 
     .file__upload {
         display: flex;

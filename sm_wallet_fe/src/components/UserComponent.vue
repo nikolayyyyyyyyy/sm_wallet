@@ -10,6 +10,8 @@ const props = defineProps({
     }
 });
 import LikeStarComponent from './LikeStarComponent.vue';
+console.log(props.user);
+
 </script>
 
 <template>
@@ -17,7 +19,7 @@ import LikeStarComponent from './LikeStarComponent.vue';
         <div class="user__inner">
             <div class="user__content">
                 <figure class="content__image image-fit">
-                    <img :src="user.profile_photo ? user.profile_photo : '/public/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'" />
+                    <img :src="user.profile_photo != null ? user.profile_photo : '/public/avatar.png'" />
                 </figure>
 
                 <div class="content">
@@ -74,6 +76,8 @@ import LikeStarComponent from './LikeStarComponent.vue';
     .user__inner {
         display: flex;
         gap: 10px;
+        width: 100%;
+        justify-content: space-between;
         align-items: center;
     }
 
@@ -112,5 +116,6 @@ import LikeStarComponent from './LikeStarComponent.vue';
 .row-reverse .user__inner {
     display: flex;
     flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 </style>

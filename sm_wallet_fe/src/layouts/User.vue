@@ -69,7 +69,7 @@ const searchForUser = async () => {
             </div>
 
             <div class="section__user-link">
-                <div class="user__link">
+                <RouterLink to="/send-money" class="user__link">
                     <div class="first">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path
@@ -80,7 +80,7 @@ const searchForUser = async () => {
                         </svg>
                     </div>
                     <p>Изпрати</p>
-                </div>
+                </RouterLink>
 
 
                 <div @click="displayAddToFavoritesPopup = true" class="user__link">
