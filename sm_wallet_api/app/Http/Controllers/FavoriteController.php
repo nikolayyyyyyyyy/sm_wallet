@@ -34,6 +34,8 @@ class FavoriteController extends Controller
             ->pluck('liked_user')
             ->map(function ($user) {
                 $user->is_favorited = true;
+
+                $user->profile_photo = $user->profile_photo ? asset($user->profile_photo) : null;
                 return $user;
             });
 

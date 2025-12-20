@@ -53,15 +53,15 @@ function handleChangeOfPhoto(event)
 
 const deleteUser = async (id) => {
     await deleteData(id, 'clients');
-    window.location.reload();
+    localStorage.removeItem('token');
+    router.push('/login');
 };
 
 onMounted(() => {
     if (!localStorage.getItem('token')) {
         router.push('/login');
     }
-}); console.log(currentUser.value);
-
+});
 </script>
 
 <template>

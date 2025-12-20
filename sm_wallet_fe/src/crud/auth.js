@@ -13,6 +13,10 @@ function getCurrentUser() {
     return user.value;
 };
 
+const refreshUser = async () => {
+    user.value = await getUser();
+};
+
 const loginUser = async (dto) => {
     const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
@@ -86,6 +90,7 @@ export function auth() {
         registerUser,
         logoutUser,
         isLogged,
-        getCurrentUser
+        getCurrentUser,
+        refreshUser
     }
 }

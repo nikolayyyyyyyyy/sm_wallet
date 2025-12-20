@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
             'middle_name' => $user->middle_name,
             'last_name' => $user->last_name,
             'role_id' => $user->role_id,
-            'profile_photo' => $user->profile_photo ?? null,
+            'profile_photo' => $user->profile_photo ? asset($user->profile_photo) : null,
             'cards' => $user->cards
         ], 200);
     });

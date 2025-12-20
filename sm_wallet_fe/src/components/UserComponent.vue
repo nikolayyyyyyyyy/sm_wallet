@@ -17,7 +17,7 @@ import LikeStarComponent from './LikeStarComponent.vue';
         <div class="user__inner">
             <div class="user__content">
                 <figure class="content__image image-fit">
-                    <img :src="user.profile_picture ? user.profile_picture : '/public/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'" />
+                    <img :src="user.profile_photo ? user.profile_photo : '/public/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'" />
                 </figure>
 
                 <div class="content">

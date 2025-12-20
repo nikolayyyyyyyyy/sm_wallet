@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -80,11 +80,7 @@ public function updateUserProfile(Request $request, string $id)
         'name' => 'required|string|max:20|min:1',
         'middle_name' => 'nullable|string|max:20|min:1',
         'last_name' => 'nullable|string|max:20|min:1',
-        'email' => [
-            'required',
-            'email',
-            Rule::unique('users','email')->ignore($id, 'id'),
-        ],
+        'email' => 'required|email|unique:users,email,' . $id,
         'profile_picture' => 'nullable|image|max:2048',
         'password' => 'nullable|min:6'
     ]);
@@ -168,12 +164,18 @@ public function updateUserProfile(Request $request, string $id)
             ], 422);
         }
 
-        // Добавяме is_favorited property
         $currentUserId = $request->user()->id;
         $user->is_favorited = Favorite::where('user_id', $currentUserId)
             ->where('liked_user_id', $user->id)
             ->exists();
 
-        return response()->json($user, 200);
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'middle_name' => $user->middle_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'profile_photo' => $user->profile_photo ? asset($user->profile_photo) : null,
+        ], 200);
     }
 }
