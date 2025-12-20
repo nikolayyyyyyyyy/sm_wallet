@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Favorite;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -69,6 +70,53 @@ class UserController extends Controller
 
         return response()->json(status: 200);
     }
+    
+    /**
+     * Update the specified user.
+    */
+public function updateUserProfile(Request $request, string $id)
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:20|min:1',
+        'middle_name' => 'nullable|string|max:20|min:1',
+        'last_name' => 'nullable|string|max:20|min:1',
+        'email' => [
+            'required',
+            'email',
+            Rule::unique('users','email')->ignore($id, 'id'),
+        ],
+        'profile_picture' => 'nullable|image|max:2048',
+        'password' => 'nullable|min:6'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    $user = User::findOrFail($id);
+
+    $user->name = $request->name;
+    $user->middle_name = $request->middle_name ?? '';
+    $user->last_name = $request->last_name ?? '';
+    if($user->email !== $request->email)
+    {
+        $user->email = $request->email;
+    }
+
+    if ($request->hasFile('profile_picture')) {
+        $path = $request->file('profile_picture')
+            ->store('profile_pictures', 'public');
+        $user->profile_photo = Storage::url($path);
+    }
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return response()->json(null, 204);
+}
 
     public function getUser(string $id)
     {
@@ -127,47 +175,5 @@ class UserController extends Controller
             ->exists();
 
         return response()->json($user, 200);
-    }
-
-    /**
-     * Update the specified user.
-     */
-    public function updateUser(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:20|min:1',
-            'middle_name' => 'nullable|min:1|max:20',
-            'last_name' => 'nullable|min:1|max:20',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role_id' => 'required'
-        ], [
-            'name' => 'Полето е задължително',
-            'middle_name' => 'Полето трябва да е до 20 символа',
-            'last_name' => 'Полето трябва да е до 20 символа',
-            'email.required' => 'Полето е задължително',
-            'email.unique' => 'Има запис с този имейл',
-            'role_id' => 'Полето е задължително'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        $user->name = $request->input('name');
-        $user->middle_name = $request->input('middle_name') ?? '';
-        $user->last_name = $request->input('last_name') ?? '';
-        $user->email = $request->input('email');
-        $user->role_id = $request->input('role_id');
-
-        $user->save();
-
-        return response()->json(status: 200);
     }
 }

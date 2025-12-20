@@ -15,11 +15,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Auth routes
     Route::get('/user', function (Request $request) {
-        $user = $request->user();
-
-        return User::where('id', $user->id)
+        $user = User::where('id', $request->user()->id)
             ->with(['cards', 'cards.currency', 'cards.card_type'])
-            ->first();
+            ->first(); 
+        
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'middle_name' => $user->middle_name,
+            'last_name' => $user->last_name,
+            'role_id' => $user->role_id,
+            'profile_photo' => $user->profile_photo ?? null,
+            'cards' => $user->cards
+        ], 200);
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -27,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // User routes
     Route::get('/clients/{id}', [UserController::class, 'getUser']);
     Route::delete('/clients/{id}/delete', [UserController::class, 'destroy']);
-    Route::post('/clients/{id}/update', [UserController::class, 'updateUser']);
+    Route::post('/clients/{id}/update', [UserController::class, 'updateUserProfile']);
     Route::get('/clients', [UserController::class, 'index']);
     Route::post('/clients', [UserController::class, 'storeUser']);
     Route::post('/clients/check-email', [UserController::class, 'checkEmail']);

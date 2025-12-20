@@ -4,6 +4,7 @@ import FormInput from '@/components/FormInput.vue';
 import GoToArrow from '@/components/GoToArrow.vue';
 import { auth } from '@/crud/auth';
 import { del } from '@/crud/delete';
+import { update } from '@/crud/update';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -15,9 +16,40 @@ const { getCurrentUser } = auth();
 currentUser.value = getCurrentUser();
 
 const { deleteData } = del();
-const updateUser = async () => {
-    console.log(currentUser?.value);
+const { updateUser } = update();
+
+const is_fetching = ref(false);
+const file_upload = ref(null);
+const file_image_url = ref(currentUser.value.profile_photo);
+
+const updateUserData = async () => {
+    if (is_fetching.value) return;
+    is_fetching.value = true;
+
+    const formData = new FormData();
+    formData.append('name', currentUser.value.name);
+    formData.append('middle_name', currentUser.value.middle_name);
+    formData.append('last_name', currentUser.value.last_name);
+    formData.append('email', currentUser.value.email);
+    
+    if (new_password.value) {
+        formData.append('password', new_password.value);
+    }
+
+    if (file_upload.value) {
+        formData.append('profile_picture', file_upload.value);
+    }
+
+    await updateUser(formData, 'clients', currentUser.value.id);
+    is_fetching.value = false;
 };
+
+function handleChangeOfPhoto(event)
+{
+    const file = event.target.files[0];
+    file_upload.value = file;
+    file_image_url.value = URL.createObjectURL(file);
+}
 
 const deleteUser = async (id) => {
     await deleteData(id, 'clients');
@@ -28,7 +60,8 @@ onMounted(() => {
     if (!localStorage.getItem('token')) {
         router.push('/login');
     }
-});
+}); console.log(currentUser.value);
+
 </script>
 
 <template>
@@ -41,9 +74,9 @@ onMounted(() => {
             </div>
 
             <div class="section__content">
-                <div class="section__iamge-upload">
+                <div class="section__image-upload">
                     <figure class="section__image image-fit">
-                        <img src="../../../public/456799695_842499038025303_7209467520786118063_n.jpg" />
+                        <img :src="file_image_url != null ? file_image_url : '../../../public/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'" />
                     </figure>
 
 
@@ -61,7 +94,7 @@ onMounted(() => {
                         </svg>
                     </label>
 
-                    <input type="file" id="file-upload" hidden />
+                    <input @change="handleChangeOfPhoto" type="file" id="file-upload" hidden />
                 </div>
 
                 <form class="base-form">
@@ -73,7 +106,7 @@ onMounted(() => {
                     <FormInput label="Нова парола" v-model="new_password" />
 
                     <div class="section__buttons">
-                        <Button @click.prevent="updateUser" text="Промени" />
+                        <Button @click.prevent="updateUserData" text="Промени" />
 
                         <Button @click.prevent="deleteUser(currentUser.id)" :delete_btn="true" text="Изтрий" />
                     </div>
@@ -99,11 +132,11 @@ onMounted(() => {
         cursor: pointer;
     }
 
-    .section__iamge-upload {
+    .section__image-upload {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         align-items: center;
+        gap:12px;
         width: 30%;
     }
 
