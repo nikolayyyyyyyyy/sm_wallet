@@ -45,7 +45,9 @@ onMounted(async () => {
             
             <div class="section__content">
                 <div v-if="liked_users" class="section__users">
-                    <UserComponent v-for="user in liked_users" :user :chat-icon="true" />
+                    <RouterLink v-for="user in liked_users" :to="{name: 'chat', params: { id: user.id }}" :key="user.id">
+                        <UserComponent :user="user" :chat-icon="true" />
+                    </RouterLink>
                 </div>
 
                 <LoadingComponent v-if="is_loading" />

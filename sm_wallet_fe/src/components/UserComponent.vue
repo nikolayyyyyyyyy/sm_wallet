@@ -10,8 +10,6 @@ const props = defineProps({
     }
 });
 import LikeStarComponent from './LikeStarComponent.vue';
-console.log(props.user);
-
 </script>
 
 <template>

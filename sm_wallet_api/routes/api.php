@@ -11,6 +11,8 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 use App\Models\User;
+use App\Http\Controllers\ChatController;
+
 Route::middleware('auth:sanctum')->group(function () {
 
     //Auth routes
@@ -72,8 +74,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('transactions', [TransactionController::class, 'getAllTransactions']);
     Route::post('/transactions', [TransactionController::class, 'storeTransaction']);
 
+    // Favorite routes  
     Route::post('/favorites-all', [FavoriteController::class, 'getFavoriteUsers']);
     Route::post('/favorites', [FavoriteController::class, 'store_favorite']);
+
+    // Message routes
+    Route::get('/messages/{id}', [ChatController::class, 'getMessages']);
 });
 
 //Public route
