@@ -49,11 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/currencies/{id}/update', [CurrencyController::class, 'updateCurrency']);
 
     // Account Type routes
+    Route::post('/account-types/{id}/update', [AccountTypeController::class, 'updateAccountType']);
+    Route::get('/account-types/{id}', [AccountTypeController::class, 'getAccountType']);
     Route::delete('/account-types/{id}/delete', [AccountTypeController::class, 'deleteAccountType']);
     Route::get('/account-types', [AccountTypeController::class, 'getAccountTypes']);
     Route::post('/account-types', [AccountTypeController::class, 'storeAccountType']);
 
     // Transaction Type routes
+    Route::post('/transaction-types/{id}/update', [TransactionTypeController::class, 'updateTransactionType']);
+    Route::get('/transaction-types/{id}', [TransactionTypeController::class, 'getTransactionType']);
     Route::delete('/transaction-types/{id}/delete', [TransactionTypeController::class, 'deleteTransactionType']);
     Route::get('/transaction-types', [TransactionTypeController::class, 'getTransactionTypes']);
     Route::post('/transaction-types', [TransactionTypeController::class, 'storeTransactionType']);

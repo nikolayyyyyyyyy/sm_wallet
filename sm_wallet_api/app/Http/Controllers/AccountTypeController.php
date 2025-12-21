@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\AccountType;
 class AccountTypeController extends Controller
 {
+    public function getAccountType(string $id)
+    {
+        $accountType = AccountType::find($id);
+        if (!$accountType) {
+            return response()->json(['message' => 'Акаунт типът не е намерен'], 404);
+        }
+        return response()->json($accountType, 200);
+    }
+
     public function getAccountTypes()
     {
         $accountTypes = AccountType::all();
@@ -35,6 +44,31 @@ class AccountTypeController extends Controller
         ]);
 
         return response()->json($accountType, 201);
+    }
+
+    public function updateAccountType(Request $request, string $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'account_type' => 'required|max:10|unique:account_types,account_type,' . $id,
+            ],
+            [
+                'account_type.unique' => 'Типът акаунт вече съществува.',
+                'account_type.required' => 'Полето за тип на сметката е задължително.',
+                'account_type.max' => 'Типът акаунт не може да бъде по-дълъг от 10 символа.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $accountType = AccountType::find($id);
+        $accountType->account_type = $request->account_type;
+        $accountType->save();
+
+        return response()->json($accountType, 200);
     }
 
     public function deleteAccountType(string $id)

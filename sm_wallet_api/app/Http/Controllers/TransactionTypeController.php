@@ -12,6 +12,37 @@ class TransactionTypeController extends Controller
         return response()->json(TransactionType::all(), 200);
     }
 
+    public function getTransactionType(string $id)
+    {
+        $transaction_type = TransactionType::where('id', '=', $id)->first();
+        return response()->json($transaction_type, 200);
+    }
+
+    public function updateTransactionType(Request $request, string $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'transaction_type' => 'required|max:10|unique:transaction_types,transaction_type,' . $id,
+            ],
+            [
+                'transaction_type.unique' => 'Типът транзакция вече съществува.',
+                'transaction_type.required' => 'Полето за тип транзакция е задължително.',
+                'transaction_type.max' => 'Типът транзакция не може да бъде по-дълъг от 10 символа.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $transaction_type = TransactionType::where('id', '=', $id)->first();
+        $transaction_type->transaction_type = $request->transaction_type;
+        $transaction_type->save();
+
+        return response()->json(status: 204);
+    }
+
     public function storeTransactionType(Request $request)
     {
         $validator = Validator::make(

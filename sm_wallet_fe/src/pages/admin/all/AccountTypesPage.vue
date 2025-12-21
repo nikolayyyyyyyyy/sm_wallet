@@ -39,10 +39,12 @@ onMounted(async () => {
 
             <div v-if="is_loading == false" class="section__account__types">
                 <div v-for="account_type in account_types" class="section__account__type base-form">
-                    <p class="section__title">Тип на акаунт: {{ account_type.account_type }}</p>
+                    <p class="section__title--account">Тип на сметка: {{ account_type.account_type }}</p>
 
                     <div class="section__buttons">
-                        <Button text="Промени" />
+                        <RouterLink class="update_link" :to="{ name: 'account-types.update', params: { id: account_type.id }}">
+                            <Button text="Промени" />
+                        </RouterLink>
 
                         <Button text="Изтрий" @click.prevent="deleteAccountType(account_type.id)" :delete_btn="true" />
                     </div>
@@ -60,6 +62,10 @@ onMounted(async () => {
 
     .loading {
         align-self: center;
+    }
+
+    .update_link{
+        width: 100%;
     }
 
     .section__inner {
@@ -89,7 +95,7 @@ onMounted(async () => {
         box-sizing: border-box;
     }
 
-    .section__title {
+    .section__title--account {
         font-size: 20px;
         font-weight: 500;
         color: var(--c-gray);

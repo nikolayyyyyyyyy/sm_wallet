@@ -33,7 +33,7 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow :reversed="true" nav-to="/" />
 
-                <h1>Вид транзакций</h1>
+                <h1>Видове транзакции</h1>
             </div>
 
             <div v-if="is_loading == false" class="section__transaction__types">
@@ -43,7 +43,9 @@ onMounted(async () => {
                     </p>
 
                     <div class="section__buttons">
-                        <Button text="Промени" />
+                        <RouterLink class="update_btn" :to="{ name: 'transaction-types.update', params: { id: transaction_type.id }}">
+                            <Button text="Промени" />
+                        </RouterLink>
 
                         <Button text="Изтрий" :delete_btn="true"
                             @click.prevent="deleteTransactionType(transaction_type.id)" />
@@ -62,6 +64,10 @@ onMounted(async () => {
 
     .loading {
         align-self: center;
+    }
+
+    .update_btn{
+        width: 100%;
     }
 
     .section__inner {
