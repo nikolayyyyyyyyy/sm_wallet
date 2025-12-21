@@ -128,9 +128,7 @@ onMounted(() => {
                 </form>
             </div>
             
-            <div v-if="success" class="success_message__wrapper">
-                <SuccessMessage class="success_message" text="Успешно променихте профила си." />
-            </div>
+            <SuccessMessage :class="{'green-bg': true}" v-if="success" text="Успешно променихте профила си." />
         </div>
     </section>
 </template>
@@ -138,18 +136,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .section-profile {
     margin-block: 32px;
-
-    .success_message{
-        font-size: 22px;
-    }
-
-    .success_message__wrapper{
-        padding: 10px;
-        background: var(--c-green);
-        width: fit-content;
-        border-radius: 8px;
-        align-self: center;
-    }
 
     :deep(.success_message){
         color: var(--c-white);

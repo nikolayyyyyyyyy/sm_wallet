@@ -7,7 +7,7 @@ import { get } from '@/crud/get';
 import { update } from '@/crud/update';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import SuccesMessageWithTimer from '@/components/SuccesMessageWithTimer.vue';
+import SuccessMessage from '@/components/SuccessMessage.vue';
 
 const currency = ref(null);
 const router = useRoute();
@@ -33,7 +33,6 @@ const handleUpdate = async () => {
         }, 3000);
     }catch(e){
         error.value = JSON.parse(e.message).errors.currency[0];
-        console.log(error.value);
     }finally{
         is_fetching.value = false;
     }
@@ -63,7 +62,7 @@ onMounted(async () => {
 
             <LoadingComponent v-else class="loading"/>
 
-            <SuccesMessageWithTimer :text="'Успешно променена валута!'" :success />
+            <SuccessMessage :class="{'green-bg': true}" v-if="success" text="Успешно променена валута!" />
         </div>
     </section>
 </template>
@@ -71,10 +70,6 @@ onMounted(async () => {
 <style scoped lang="scss">
 .section-update-currency {
     margin-block: 32px;
-
-    :deep(.success_message){
-        color: var(--c-white);
-    } 
 
     .section__inner{
         display: flex;
