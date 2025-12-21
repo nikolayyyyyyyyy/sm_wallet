@@ -42,9 +42,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/clients/check-email', [UserController::class, 'checkEmail']);
 
     // Currency routes
+    Route::get('/currencies/{id}', [CurrencyController::class, 'getCurrency']);
     Route::delete('/currencies/{id}/delete', [CurrencyController::class, 'deleteCurrency']);
     Route::get('/currencies', [CurrencyController::class, 'getCurrencies']);
     Route::post('/currencies', [CurrencyController::class, 'storeCurrency']);
+    Route::post('/currencies/{id}/update', [CurrencyController::class, 'updateCurrency']);
 
     // Account Type routes
     Route::delete('/account-types/{id}/delete', [AccountTypeController::class, 'deleteAccountType']);

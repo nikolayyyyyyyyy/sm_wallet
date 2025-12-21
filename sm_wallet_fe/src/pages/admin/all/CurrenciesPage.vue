@@ -45,7 +45,10 @@ onBeforeMount(async () => {
 
                     <div class="section__buttons">
                         <Button :delete_btn="true" text="Изтрий" @click.prevent="deleteCurrency(currency.id)" />
-                        <Button text="Промени" />
+
+                        <RouterLink class="update_link" :to="{ name: 'currencies.update', params: { id: currency.id } }">
+                            <Button text="Промени" />
+                        </RouterLink>
                     </div>
                 </div>
             </div>
@@ -58,6 +61,10 @@ onBeforeMount(async () => {
 <style scoped lang="scss">
 .section-currencies {
     margin-block: 32px;
+
+    .update_link{
+        width: 100%;
+    }
 
     .loading {
         align-self: center;

@@ -40,7 +40,7 @@ onMounted(async () => {
                 <h1>Клиенти</h1>
             </div>
 
-            <SearchFieldSection>
+            <!-- <SearchFieldSection>
                 <div class="section__search__name">
                     <p>Име:</p>
                     <FormInput />
@@ -65,7 +65,7 @@ onMounted(async () => {
                     <p>Роля:</p>
                     <FormInput />
                 </div>
-            </SearchFieldSection>
+            </SearchFieldSection> -->
 
             <div v-if="is_loading == false" class="section__clients">
                 <div v-for="client in clients" class="section__client base-form">
@@ -76,9 +76,9 @@ onMounted(async () => {
                     <p>Роля: {{ client.role.role_name }}</p>
 
                     <div class="section__buttons">
-                        <RouterLink class="btn_link" :to="{ name: 'clients.update', params: { id: client.id } }">
+                        <!-- <RouterLink class="btn_link" :to="{ name: 'clients.update', params: { id: client.id } }">
                             <Button text="Промени" />
-                        </RouterLink>
+                        </RouterLink> -->
 
                         <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
                     </div>

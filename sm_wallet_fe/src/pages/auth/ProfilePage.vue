@@ -13,11 +13,11 @@ const router = useRouter();
 const currentUser = ref();
 const new_password = ref();
 
-const { getCurrentUser } = auth();
+const { getCurrentUser, refreshUser } = auth();
 currentUser.value = getCurrentUser();
 
 const { deleteData } = del();
-const { updateUser } = update();
+const { updateData } = update();
 
 const is_fetching = ref(false);
 const file_upload = ref(null);
@@ -44,7 +44,8 @@ const updateUserData = async () => {
     }
 
     try{
-        await updateUser(formData, 'clients', currentUser.value.id);
+        await updateData(formData, 'clients', currentUser.value.id);
+        await refreshUser();
         errors.value = [];
         success.value = true;
 

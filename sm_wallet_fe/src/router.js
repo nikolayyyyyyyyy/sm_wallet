@@ -16,9 +16,8 @@ import AllTransactionTypesPage from "./pages/admin/all/TransactionTypesPage.vue"
 import AllAccountsPage from "./pages/admin/all/AccountsPage.vue";
 import AllTransactionsPage from "./pages/admin/all/TransactionsPage.vue";
 import FavoritePage from "./pages/user/FavoritePage.vue";
-import ClientPage from "./pages/admin/update/ClientPage.vue";
 import SendMoneyPage from "./pages/user/SendMoneyPage.vue";
-
+import CurrencyUpdatePage from "./pages/admin/update/CurrencyUpdatePage.vue";
 
 const routes = [
     { path: '/', component: DashboardPage },
@@ -38,8 +37,8 @@ const routes = [
     { path: '/accounts', component: AllAccountsPage },
     { path: '/transactions', component: AllTransactionsPage },
     { path: '/favorites', component: FavoritePage },
-    { path: '/clients/:id/update', name: 'clients.update', component: ClientPage, props: true },
-    { path: '/send-money', component: SendMoneyPage}
+    { path: '/send-money', component: SendMoneyPage},
+    {path: '/currencies/:id/update', name: 'currencies.update', component: CurrencyUpdatePage, props: true },
 ]
 
 export const router = createRouter({
