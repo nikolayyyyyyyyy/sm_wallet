@@ -21,6 +21,18 @@ class ChatController extends Controller
         ->orderBy('created_at', 'asc')
         ->get();
 
+        $messages->transform(function ($message) {
+            if ($message->sender && isset($message->sender->profile_photo) && $message->sender->profile_photo) {
+                $message->sender->profile_photo = asset($message->sender->profile_photo);
+            }
+
+            if ($message->receiver && isset($message->receiver->profile_photo) && $message->receiver->profile_photo) {
+                $message->receiver->profile_photo = asset($message->receiver->profile_photo);
+            }
+
+            return $message;
+        });
+
         return response()->json($messages, 200);
     }
 }
