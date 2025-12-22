@@ -52,9 +52,9 @@ onMounted(async () => {
             <GoToArrow :reversed="true" nav-to="/favorites" />
 
             <div v-if="!is_loading" class="section__chat">
-                <p class="chat__title">
+                <div class="chat__title">
                     <figure class="chat__image image-fit">
-                        <img :src="messages?.[0]?.receiver?.profile_photo ?? '../../../public/avatar.png'" alt="User Image" />
+                        <img :src="messages?.[0]?.receiver?.profile_photo ?? '/avatar.png'" alt="User Image" />
                     </figure>
 
                     <p class="title__text">
@@ -62,13 +62,13 @@ onMounted(async () => {
                         {{ messages?.[0]?.receiver?.middle_name }}
                         {{ messages?.[0]?.receiver?.last_name }}
                     </p>
-                </p>
+                </div>
 
                 <div class="chat__messages">
                     <div v-for="message in messages" :key="message.id" class="message">
                         <div v-if="message.sender.id == currentUser?.id" class="message__sender">
                             <figure class="profile__photo image-fit">
-                                <img :src="message.sender.profile_photo ?? '../../../public/avatar.png'" alt="User Image" />
+                                <img :src="message.sender.profile_photo ?? '/avatar.png'" alt="User Image" />
                             </figure>
 
                             <p>{{ message.message }}</p>

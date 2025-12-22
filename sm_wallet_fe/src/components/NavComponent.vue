@@ -20,7 +20,7 @@ const logout = async () => {
                 <p>Профил</p>
 
                 <figure class="profile_photo image-fit">
-                    <img :src="currentLogged?.profile_photo ?? '../../../public/avatar.png'" alt="User Image" />
+                    <img :src="currentLogged?.profile_photo ?? '/avatar.png'" alt="User Image" />
                 </figure>
             </RouterLink>
 
