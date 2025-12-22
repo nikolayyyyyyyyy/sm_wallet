@@ -80,6 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Message routes
     Route::get('/messages/{id}', [ChatController::class, 'getMessages']);
+    Route::post('/messages/{id}', [ChatController::class, 'storeMessage']);
 });
 
 //Public route

@@ -6,6 +6,33 @@ use Illuminate\Http\Request;
 use App\Models\ChatMessage;
 class ChatController extends Controller
 {
+    public function storeMessage(Request $request, $id)
+    {
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $user = $request->user();
+
+        $chatMessage = new ChatMessage();
+        $chatMessage->sender_id = $user->id;
+        $chatMessage->receiver_id = $id;
+        $chatMessage->message = $request->input('message');
+        $chatMessage->save();
+
+        $chatMessage->load(['sender', 'receiver']);
+
+        if ($chatMessage->sender && isset($chatMessage->sender->profile_photo) && $chatMessage->sender->profile_photo) {
+            $chatMessage->sender->profile_photo = asset($chatMessage->sender->profile_photo);
+        }
+
+        if ($chatMessage->receiver && isset($chatMessage->receiver->profile_photo) && $chatMessage->receiver->profile_photo) {
+            $chatMessage->receiver->profile_photo = asset($chatMessage->receiver->profile_photo);
+        }
+
+        return response()->json($chatMessage, 201);
+    }
+
     public function getMessages(Request $request, $id)
     {
         $user = $request->user();

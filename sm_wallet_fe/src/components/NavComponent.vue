@@ -1,13 +1,16 @@
 <script setup>
 import { auth } from '../crud/auth';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 const router = useRouter();
-const { isLogged, logoutUser } = auth();
+const { isLogged, logoutUser, getCurrentUser } = auth();
+const currentLogged = ref(getCurrentUser());
 
 const logout = async () => {
     await logoutUser();
     router.push('/login');
 };
+
 </script>
 
 <template>
@@ -16,14 +19,9 @@ const logout = async () => {
             <RouterLink v-if="isLogged()" class="nav-item" to="/my-profile">
                 <p>Профил</p>
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
-                    <path
-                        d="M19.2188 21.5V19.5C19.2188 18.4391 18.7973 17.4217 18.0472 16.6716C17.297 15.9214 16.2796 15.5 15.2188 15.5H9.21875C8.15788 15.5 7.14047 15.9214 6.39032 16.6716C5.64018 17.4217 5.21875 18.4391 5.21875 19.5V21.5"
-                        stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path
-                        d="M12.2188 11.5C14.4279 11.5 16.2188 9.70914 16.2188 7.5C16.2188 5.29086 14.4279 3.5 12.2188 3.5C10.0096 3.5 8.21875 5.29086 8.21875 7.5C8.21875 9.70914 10.0096 11.5 12.2188 11.5Z"
-                        stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+                <figure class="profile_photo image-fit">
+                    <img :src="currentLogged?.profile_photo ?? '../../../public/avatar.png'" alt="User Image" />
+                </figure>
             </RouterLink>
 
             <RouterLink v-if="!isLogged()" class="nav-item" to="/login">
@@ -80,6 +78,13 @@ const logout = async () => {
     background-color: var(--c-blue);
     padding-block: 10px;
     border-bottom: 1px solid #334155;
+
+    .profile_photo{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
 
     .nav-auth-links {
         display: flex;
