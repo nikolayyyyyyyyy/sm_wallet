@@ -14,7 +14,7 @@ defineProps({
 <style scoped>
 .error {
     color: var(--c-red);
-    font-size: 13px;
-    text-align: center;
+    font-size: 10px;
+    padding-left: 8px;
 }
 </style>

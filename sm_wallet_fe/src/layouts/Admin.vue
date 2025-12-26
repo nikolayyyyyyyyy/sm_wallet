@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router';
             <RouterLink class="panel-item" to="/create-currency">Добави валута</RouterLink>
             <RouterLink class="panel-item" to="/create-account-type">Добави вид сметка</RouterLink>
             <RouterLink class="panel-item" to="/create-transaction-type">Добави вид транзакция</RouterLink>
-            <RouterLink class="panel-item" to="/create-account">Добави карта</RouterLink>
+            <RouterLink class="panel-item" to="/create-account">Добави сметка</RouterLink>
             <RouterLink class="panel-item" to="/create-transaction">Добави транзакция</RouterLink>
         </div>
 

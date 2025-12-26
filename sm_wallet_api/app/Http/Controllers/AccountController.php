@@ -8,6 +8,48 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
+    public function updateAccount(Request $request, string $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'account_number' => 'required|string|size:10|unique:accounts,id',
+                'amount' => 'required|numeric',
+                'interest' => 'required|numeric'
+            ],
+            [
+                'account_number.required' => 'Полето за номер на акаунт е задължително.',
+                'account_number.size' => 'Номерът на акаунта трябва да бъде точно 10 символа.',
+                'account_number.unique' => 'Акаунт с този номер вече съществува.',
+                'amount.required' => 'Полето за сума е задължително.',
+                'amount.numeric' => 'Сумата трябва да бъде числова стойност.',
+                'interest.required' => 'Полето за лихва е задължително.',
+                'interest.numeric' => 'Лихвата трябва да бъде числова стойност.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $account = Account::where('id', '=', $id)->first();
+        if($account == null)
+        {
+            return response()->json(['message' => 'User not found.', 404]);
+        }
+
+        $account->account_number = $request->account_number;
+        $account->amount = $request->amount;
+        $account->interest = $request->interest;
+        $account->currency_id = $request->currency_id;
+        $account->account_type_id = $request->account_type_id;
+        $account->user_id = $request->user_id;
+
+        $account->save();
+
+        return response()->json(status: 201);
+    }
+
     public function getAllAccounts()
     {
         $accounts = Account::with(['currency', 'card_type', 'user'])
@@ -15,6 +57,13 @@ class AccountController extends Controller
 
         return response()->json($accounts, 200);
     }
+
+    public function getAccount(string $id)
+    {
+        $account = Account::where('id', '=', $id)->first();
+        return response()->json($account, 200);
+    }
+
     public function storeAccount(Request $request)
     {
         $validator = Validator::make(

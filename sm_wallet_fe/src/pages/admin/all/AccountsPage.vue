@@ -55,7 +55,9 @@ onBeforeMount(async () => {
                     <p>Имейл на притежателя: {{ account.user.email }}</p>
 
                     <div class="section__buttons">
-                        <Button text="Промени" />
+                        <RouterLink class="update_link" :to="{ name: 'accounts.update', params: { id: account.id }}">
+                            <Button text="Промени" />
+                        </RouterLink>
 
                         <Button text="Изтрий" :delete_btn="true" @click="deleteAccount(account.id)" />
                     </div>
@@ -70,6 +72,10 @@ onBeforeMount(async () => {
 <style scoped lang="scss">
 .section-accounts {
     margin-block: 32px;
+
+    .update_link{
+        width: 100%;
+    }
 
     .loading {
         align-self: center;
