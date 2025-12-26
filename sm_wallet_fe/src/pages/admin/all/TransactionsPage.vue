@@ -38,7 +38,7 @@ onMounted(async () => {
                 <h1>Tранзакций</h1>
             </div>
 
-            <div v-if="is_loading == false && transactions" class="section__transactions">
+            <div v-if="!is_loading && transactions" class="section__transactions">
                 <div v-for="transaction in transactions" class="section__transaction base-form">
                     <p>Размер на превод: {{ transaction.amount }}
                         <span class="section__curency">
@@ -55,7 +55,9 @@ onMounted(async () => {
                     <p>Номер на сметка на получателя: {{ transaction.receiver_account.account_number }}</p>
 
                     <div class="section__buttons">
-                        <Button text="Промени" />
+                        <RouterLink class="update_link" :to="{name: 'transactions.update', params: {id: transaction.id}}">
+                            <Button text="Промени" />
+                        </RouterLink>
 
                         <Button text="изтрий" :delete_btn="true" @click="deleteTransaction(transaction.id)" />
                     </div>
@@ -64,7 +66,7 @@ onMounted(async () => {
 
             <LoadingComponent class="loading" v-if="is_loading" />
 
-            <FormErrorMessage v-else text="Няма намерени транзакций" />
+            <FormErrorMessage v-if="!is_loading && !transactions" text="Няма намерени транзакций" />
         </div>
     </section>
 </template>
@@ -72,6 +74,10 @@ onMounted(async () => {
 <style scoped lang="scss">
 .section-transactions {
     margin-block: 32px;
+
+    .update_link{
+        width: 100%;
+    }
 
     .loading {
         align-self: center;

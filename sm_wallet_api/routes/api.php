@@ -72,6 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/accounts', [AccountController::class, 'storeAccount']);
 
     // Transaction routes
+    Route::post('/transactions/{id}/update', [TransactionController::class, 'updateTransaction']);
+    Route::get('/transactions/{id}', [TransactionController::class, 'getTransaction']);
     Route::delete('/transactions/{id}/delete', [TransactionController::class, 'deleteTransaction']);
     Route::get('transactions', [TransactionController::class, 'getAllTransactions']);
     Route::post('/transactions', [TransactionController::class, 'storeTransaction']);

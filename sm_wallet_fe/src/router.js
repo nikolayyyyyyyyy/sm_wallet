@@ -22,6 +22,7 @@ import AccountTypeUpdate from "./pages/admin/update/AccountTypeUpdate.vue";
 import TransactionTypeUpdate from "./pages/admin/update/TransactionTypeUpdate.vue";
 import ChatPage from "./pages/user/ChatPage.vue";
 import AccountUpdate from "./pages/admin/update/AccountUpdate.vue";
+import TransactionUpdate from "./pages/admin/update/TransactionUpdate.vue";
 
 const routes = [
     { path: '/', component: DashboardPage },
@@ -46,7 +47,8 @@ const routes = [
     { path: '/account-types/:id/update', name: 'account-types.update', component: AccountTypeUpdate, props: true },
     { path: '/transaction-types/:id/update', name: 'transaction-types.update', component: TransactionTypeUpdate, props: true },
     { path: '/chat/:id', name: 'chat', component: ChatPage, props: true },
-    { path: '/accounts/:id/update', name: 'accounts.update', component: AccountUpdate, props: true }
+    { path: '/accounts/:id/update', name: 'accounts.update', component: AccountUpdate, props: true },
+    { path: '/transactions/:id/update', name: 'transactions.update', component: TransactionUpdate, props: true}
 ]
 
 export const router = createRouter({

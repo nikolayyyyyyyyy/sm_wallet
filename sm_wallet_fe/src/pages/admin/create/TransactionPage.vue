@@ -65,10 +65,10 @@ onMounted(async () => {
                 <div class="section__form-top">
                     <FormInput label="Сума" v-model="transactionData.amount" :error="errors?.amount?.[0]" />
 
-                    <FormInput label="Номер на карта на изпращач" v-model="transactionData.account_sender_number"
+                    <FormInput label="Изпращач" v-model="transactionData.account_sender_number"
                         :error="errors?.account_sender_number?.[0]" />
 
-                    <FormInput label="Номер на карта на получател" v-model="transactionData.account_receiver_number"
+                    <FormInput label="Получател" v-model="transactionData.account_receiver_number"
                         :error="errors?.account_receiver_number?.[0]" />
                 </div>
                 <TextareaFormInput label=" Бележка" v-model="transactionData.note" :error="errors?.note?.[0]" />

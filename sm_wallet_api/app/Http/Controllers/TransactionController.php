@@ -9,6 +9,70 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+    public function updateTransaction(Request $request)
+    {
+        $transaction = Transaction::where('id', '=', $request->id)->first();
+        if($transaction == null)
+        {
+            return response()->json(['message' => 'Transaction not fount.'], 404);
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'amount' => 'required|numeric',
+                'note' => 'nullable|string|max:255',
+                'sender_account_number' => 'required|exists:accounts,account_number',
+                'receiver_account_number' => 'required|exists:accounts,account_number'
+            ],
+            [
+                'amount.required' => 'Полето за сума е задължително.',
+                'amount.numeric' => 'Сумата трябва да бъде число.',
+                'note.max' => 'Бележката не може да надвишава 255 символа.',
+                'sender_account_number.required' => 'Полето за изпращач е задължително',
+                'sender_account_number.exists' => 'Номера на изпращача не съществува.',
+                'receiver_account_number.required' => 'Полето за получател е задължително',
+                'receiver_account_number.exists' => 'Номера на получател не съществува.'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $account_sender = Account::where("account_number", "=", $request->sender_account_number)->first();
+        $account_receiver = Account::where("account_number", "=", $request->receiver_account_number)->first();
+
+        if ($account_sender->amount < $request->amount) {
+            return response()->json(["notEnoughtMoney" => "Изпращача няма достатъчно пари за транзакцията"], 500);
+        }
+
+        $account_sender->amount -= $request->amount;
+        $account_receiver->amount += $request->amount;
+        $account_sender->save();
+        $account_receiver->save();
+
+        $transaction->amount = $request->amount;
+        $transaction->note = $request->note;
+        $transaction->transaction_type_id = $request->transaction_type_id;
+        $transaction->account_sender_id = $account_sender->id;
+        $transaction->account_receiver_id = $account_receiver->id;
+        $transaction->save();
+
+        return response()->json(status: 201);
+    }
+
+    public function getTransaction(string $id)
+    {
+        $transaction = Transaction::where('id', '=', $id)
+            ->with(['sender_account', 'receiver_account'])->first();
+
+        if($transaction == null){
+            return response()->json(['message' => 'Transaction not fount'],404);
+        }
+
+        return response()->json($transaction, 200);
+    }
 
     public function getAllTransactions()
     {
