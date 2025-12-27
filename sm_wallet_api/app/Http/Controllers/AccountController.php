@@ -64,6 +64,15 @@ class AccountController extends Controller
         return response()->json($account, 200);
     }
 
+    public function getAccountLoaded(string $id)
+    {
+        $account = Account::where('id', '=', $id)
+            ->with(['currency','card_type'])
+            ->first();
+
+        return response()->json($account, 200);
+    }
+
     public function storeAccount(Request $request)
     {
         $validator = Validator::make(

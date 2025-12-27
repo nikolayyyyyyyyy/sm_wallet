@@ -21,7 +21,6 @@ const handleLogin = async () => {
         await loginUser(loginData.value, 'login');
         invalidCredentials.value = '';
         errors.value = [];
-        router.push('/');
     } catch (err) {
         if (JSON.parse(err.message).errors) {
             invalidCredentials.value = '';
@@ -30,6 +29,8 @@ const handleLogin = async () => {
             errors.value = [];
             invalidCredentials.value = JSON.parse(err.message).message;
         }
+    }finally{
+        router.push('/');
     }
 };
 

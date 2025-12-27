@@ -21,11 +21,11 @@ class UserController extends Controller
         $currentUserId = $request->user()->id;
         $users = User::with('role')->get();
 
-        // Добавяме is_favorited property за всеки потребител
         $users->each(function ($user) use ($currentUserId) {
             $user->is_favorited = Favorite::where('user_id', $currentUserId)
                 ->where('liked_user_id', $user->id)
                 ->exists();
+            $user->profile_photo = $user->profile_photo ? asset($user->profile_photo) : null;
         });
 
         return response()->json($users, 200);

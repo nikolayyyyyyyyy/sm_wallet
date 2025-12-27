@@ -4,13 +4,13 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 const router = useRouter();
 const { isLogged, logoutUser, getCurrentUser } = auth();
-const currentLogged = ref(getCurrentUser());
+const currentLogged = ref();
+currentLogged.value = getCurrentUser();
 
 const logout = async () => {
     await logoutUser();
     router.push('/login');
 };
-
 </script>
 
 <template>
@@ -18,10 +18,6 @@ const logout = async () => {
         <div class="nav-auth-links">
             <RouterLink v-if="isLogged()" class="nav-item" to="/my-profile">
                 <p>Профил</p>
-
-                <figure class="profile_photo image-fit">
-                    <img :src="currentLogged?.profile_photo ?? '/avatar.png'" alt="User Image" />
-                </figure>
             </RouterLink>
 
             <RouterLink v-if="!isLogged()" class="nav-item" to="/login">
@@ -78,13 +74,6 @@ const logout = async () => {
     background-color: var(--c-blue);
     padding-block: 10px;
     border-bottom: 1px solid #334155;
-
-    .profile_photo{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        overflow: hidden;
-    }
 
     .nav-auth-links {
         display: flex;

@@ -1,11 +1,9 @@
 <script setup>
 import Button from '@/components/Button.vue';
-import FormInput from '@/components/FormInput.vue';
 import GoToArrow from '@/components/GoToArrow.vue';
 import LoadingComponent from '@/components/LoadingComponent.vue';
 import { del } from '@/crud/delete';
 import { get } from '@/crud/get';
-import SearchFieldSection from '@/sections/SearchFieldSection.vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -40,46 +38,23 @@ onMounted(async () => {
                 <h1>Клиенти</h1>
             </div>
 
-            <!-- <SearchFieldSection>
-                <div class="section__search__name">
-                    <p>Име:</p>
-                    <FormInput />
-                </div>
-
-                <div class="section__search__name">
-                    <p>Презиме:</p>
-                    <FormInput />
-                </div>
-
-                <div class="section__search__name">
-                    <p>Фамилия:</p>
-                    <FormInput />
-                </div>
-
-                <div class="section__search__name">
-                    <p>Имейл:</p>
-                    <FormInput />
-                </div>
-
-                <div class="section__search__name">
-                    <p>Роля:</p>
-                    <FormInput />
-                </div>
-            </SearchFieldSection> -->
-
-            <div v-if="is_loading == false" class="section__clients">
+            <div v-if="!is_loading" class="section__clients">
                 <div v-for="client in clients" class="section__client base-form">
-                    <p>Име: {{ client.name }}</p>
-                    <p>Презиме: {{ client.middle_name ? client.middle_name : 'Не е въведено' }}</p>
-                    <p>Фамилия: {{ client.last_name ? client.last_name : 'Не е въведено' }}</p>
-                    <p>Имейл: {{ client.email }}</p>
-                    <p>Роля: {{ client.role.role_name }}</p>
+                    <div class="section__client__inner">
+                        <figure class="inner__photo image-fit">
+                            <img :src="client.profile_photo ?? '/avatar.png'">
+                        </figure>
+
+                        <div class="inner__content">
+                            <p>Име: {{ client.name }}</p>
+                            <p>Презиме: {{ client.middle_name ? client.middle_name : 'Не е въведено' }}</p>
+                            <p>Фамилия: {{ client.last_name ? client.last_name : 'Не е въведено' }}</p>
+                            <p>Имейл: {{ client.email }}</p>
+                            <p>Роля: {{ client.role.role_name }}</p>
+                        </div>
+                    </div>
 
                     <div class="section__buttons">
-                        <!-- <RouterLink class="btn_link" :to="{ name: 'clients.update', params: { id: client.id } }">
-                            <Button text="Промени" />
-                        </RouterLink> -->
-
                         <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
                     </div>
                 </div>
@@ -94,28 +69,17 @@ onMounted(async () => {
 .section-clients {
     margin-block: 32px;
 
-    .loading {
-        align-self: center;
-    }
-
-    .section__search__name {
-        color: var(--c-white);
-        display: flex;
+    .section__title {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        gap: 10px;
+        color: var(--c-gray);
     }
 
     .section__shell {
         display: flex;
         flex-direction: column;
         gap: 24px;
-    }
-
-    .section__title {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        color: var(--c-gray);
     }
 
     .section__clients {
@@ -131,18 +95,41 @@ onMounted(async () => {
         flex: 0 0 calc((100% - 40px) / 3);
         box-sizing: border-box;
         color: var(--c-gray);
-        font-size: 20px;
-        font-weight: 500;
+        font-size: 18px;
+
+        .inner__content{
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: fit-content;
+        }
+
+        .section__client__inner{
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .inner__photo{
+            width: 50%;
+            border-radius: 10px;
+            aspect-ratio: 1 / 1;
+            align-self: flex-start;
+        }
+    }
+
+    .loading {
+        align-self: center;
     }
 
     .section__buttons {
         margin-top: auto;
         display: flex;
         gap: 20px;
-    }
 
-    .btn_link {
-        width: 100%;
+        .more_link{
+            width: 100%;
+        }
     }
 }
 </style>

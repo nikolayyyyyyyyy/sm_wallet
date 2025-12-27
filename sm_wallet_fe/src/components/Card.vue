@@ -66,7 +66,6 @@ defineProps({
     box-sizing: border-box;
     padding: 16px;
     border-radius: 12px;
-    cursor: pointer;
     min-width: 300px;
     border: 1px solid var(--c-gray);
 

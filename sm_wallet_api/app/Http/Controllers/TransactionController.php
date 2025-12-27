@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+    public function getTransactionBySlug(string $slug)
+    {
+        return response()->json($slug, 200);
+    }
+
     public function updateTransaction(Request $request)
     {
         $transaction = Transaction::where('id', '=', $request->id)->first();
@@ -42,15 +47,6 @@ class TransactionController extends Controller
 
         $account_sender = Account::where("account_number", "=", $request->sender_account_number)->first();
         $account_receiver = Account::where("account_number", "=", $request->receiver_account_number)->first();
-
-        if ($account_sender->amount < $request->amount) {
-            return response()->json(["notEnoughtMoney" => "Изпращача няма достатъчно пари за транзакцията"], 500);
-        }
-
-        $account_sender->amount -= $request->amount;
-        $account_receiver->amount += $request->amount;
-        $account_sender->save();
-        $account_receiver->save();
 
         $transaction->amount = $request->amount;
         $transaction->note = $request->note;
