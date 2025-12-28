@@ -189,8 +189,9 @@ const searchForUser = async () => {
     }
 
     .section__no-cards {
+        margin-block: 20px;
         font-size: 18px;
-        color: var(--c-gray);
+        color: var(--c-red);
     }
 
     .section__user-link {

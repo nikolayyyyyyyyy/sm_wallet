@@ -11,7 +11,27 @@ class TransactionController extends Controller
 {
     public function getTransactionBySlug(string $slug)
     {
-        return response()->json($slug, 200);
+        $account = Account::where('account_number', '=', $slug)->first();
+        if($account == null){
+            return response()->json(['message' => 'Account not found', 404]);
+        }
+
+        $transactions = Transaction::where(function ($q) use ($account){
+            $q->where('account_sender_id', '=', $account->id)
+                ->orWhere('account_receiver_id', '=', $account->id);
+        })->get();
+
+        $transactions->load(['sender_account',
+            'receiver_account',
+            'transaction_type',
+            'receiver_account.currency',
+            'receiver_account.card_type',
+            'sender_account.currency',
+            'sender_account.card_type',
+            'receiver_account.user',
+            'sender_account.user',]);
+
+        return response()->json($transactions, 200);
     }
 
     public function updateTransaction(Request $request)

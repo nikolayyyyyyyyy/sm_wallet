@@ -50,7 +50,7 @@ onMounted(async () => {
 
                 <LoadingComponent v-if="is_loading" />
 
-                <FormErrorMessage v-if="is_loading == false && liked_users?.length == 0" text="Не сте добавили никой още." />
+                <FormErrorMessage class="empty__transactions" v-if="is_loading == false && liked_users?.length == 0" text="Не сте добавили никой още." />
             </div>
         </div>
     </section>
@@ -65,6 +65,11 @@ onMounted(async () => {
         flex-direction: column;
         align-items: center;
         gap: 24px;
+    }
+
+    .empty__transactions{
+        color: var(--c-red);
+        font-size: 15px;
     }
 
     .loading {
