@@ -51,6 +51,7 @@ const searchForUser = async () => {
         errors.value = JSON.parse(err.message).errors;
         foundUser.value = null;
     }
+    
     is_loading.value = false;
 };
 
@@ -139,13 +140,14 @@ const searchForUser = async () => {
             <FormInput v-model="userToSearch.email" label="търси по имейл" :error="errors?.email?.[0]"
                 :is-for-email="true" />
 
-            <div v-if="foundUser && !foundUser.errors && is_loading == false" class="popup__user">
+            <div v-if="foundUser && !foundUser?.errors && !is_loading && foundUser?.id != user?.id" class="popup__user">
                 <UserComponent :user="foundUser" />
             </div>
 
             <LoadingComponent v-if="is_loading && !foundUser?.errors" />
 
-            <FormErrorMessage v-if="foundUser?.errors?.email" :text="foundUser.errors?.email[0]" />
+            <FormErrorMessage class="error__message" v-if="foundUser?.errors?.email" :text="foundUser?.errors?.email[0]" />
+            <FormErrorMessage class="error__message" v-if="foundUser?.id == user?.id" text="Не можеш да харесаш себе си. ;)" />
 
             <Button @click="searchForUser" class="btn" text="Намери" />
         </Popup>
@@ -158,6 +160,10 @@ const searchForUser = async () => {
         display: flex;
         align-items: center;
         gap: 20px;
+    }
+
+    .error__message{
+        font-size: 18px;
     }
 
     .section__user-name{
