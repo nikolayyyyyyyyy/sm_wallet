@@ -51,12 +51,12 @@ class TransactionController extends Controller
                 'receiver_account_number' => 'required|exists:accounts,account_number'
             ],
             [
-                'amount.required' => 'Полето за сума е задължително.',
+                'amount.required' => 'Полето е задължително.',
                 'amount.numeric' => 'Сумата трябва да бъде число.',
                 'note.max' => 'Бележката не може да надвишава 255 символа.',
-                'sender_account_number.required' => 'Полето за изпращач е задължително',
+                'sender_account_number.required' => 'Полето е задължително.',
                 'sender_account_number.exists' => 'Номера на изпращача не съществува.',
-                'receiver_account_number.required' => 'Полето за получател е задължително',
+                'receiver_account_number.required' => 'Полето е задължително.',
                 'receiver_account_number.exists' => 'Номера на получател не съществува.'
             ]
         );
@@ -115,13 +115,13 @@ class TransactionController extends Controller
                 'account_receiver_number' => 'required|exists:accounts,account_number',
             ],
             [
-                'amount.required' => 'Полето за сума е задължително.',
+                'amount.required' => 'Полето е задължително.',
                 'amount.numeric' => 'Сумата трябва да бъде число.',
                 'note.max' => 'Бележката не може да надвишава 255 символа.',
-                'transaction_type_id.required' => 'Типът на транзакция е задължителна',
-                'account_sender_number.required' => 'Полето за изпращач е задължително',
+                'transaction_type_id.required' => 'Полето е задължително.',
+                'account_sender_number.required' => 'Полето е задължително.',
                 'account_sender_number.exists' => 'Номера на изпращача не съществува.',
-                'account_receiver_number.required' => 'Полето за получател е задължително',
+                'account_receiver_number.required' => 'Полето е задължително.',
                 'account_receiver_number.exists' => 'Номера на получател не съществува.'
             ]
         );
@@ -130,11 +130,19 @@ class TransactionController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $account_sender = Account::where("account_number", "=", $request->account_sender_number)->first();
+        if($request->input("account_sender_id")){
+            $account_sender = Account::where("id", "=", $request->account_sender_id)->first();
+        } else {
+            $account_sender = Account::where("account_number", "=", $request->account_sender_number)->first();
+        }
+
         $account_receiver = Account::where("account_number", "=", $request->account_receiver_number)->first();
+        if($account_sender->id == $account_receiver->id){
+            return response()->json(['same_account' => 'Не може да правиш транзакция от една сметка в самата нея.'], 422);
+        }
 
         if ($account_sender->amount < $request->amount) {
-            return response()->json(["notEnoughtMoney" => "Изпращача няма достатъчно пари за транзакцията"], 500);
+            return response()->json(["notEnoughtMoney" => "Надвишаване на наличността."], 422);
         }
 
         $account_sender->amount -= $request->amount;
@@ -150,7 +158,7 @@ class TransactionController extends Controller
             'account_receiver_id' => $account_receiver->id,
         ]);
 
-        return response()->json(['transaction' => $transaction], 201);
+        return response()->json(status: 201);
     }
 
     public function deleteTransaction(string $id)

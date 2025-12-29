@@ -4,14 +4,15 @@ import Card from '@/components/Card.vue';
 import FormInput from '@/components/FormInput.vue';
 import GoToArrow from '@/components/GoToArrow.vue';
 import SelectComponent from '@/components/SelectComponent.vue';
+import SuccessMessage from '@/components/SuccessMessage.vue';
 import TextareaFormInput from '@/components/TextareaFormInput.vue';
 import { auth } from '@/crud/auth';
 import { store } from '@/crud/create';
 import { get } from '@/crud/get';
 import { onMounted, ref } from 'vue';
 
-const { getCurrentUser } = auth();
-const user = getCurrentUser();
+const { getCurrentUser, refreshUser } = auth();
+let user = getCurrentUser();
 const transaction = ref({
     account_sender_id: 1,
     account_receiver_number: '',
@@ -26,22 +27,43 @@ const { create } = store();
 const is_fetching = ref(false);
 const success_message = ref(false);
 const errors = ref();
+const other_error = ref(false);
+const error_message = ref();
 
 const submitTransaction = async () => {
     if(is_fetching.value) return;
-    
+
     try{
         is_fetching.value = true;
         await create(transaction.value, 'transactions');
-
+        await refreshUser();
+        
+        user = getCurrentUser();
         success_message.value = true;
+        errors.value = [];
+        Object.keys(transaction.value).forEach(t => transaction.value[t] = '');
 
         setTimeout(() => {
             success_message.value = false;
-        },300);
-        errors.value = [];
+        },3000);
     }catch(err){
-        console.log(JSON.parse(err.message).errors);
+        if(JSON.parse(err.message).errors){
+            errors.value = JSON.parse(err.message).errors;
+        }else if(JSON.parse(err.message).same_account){
+            other_error.value = true;
+            error_message.value = JSON.parse(err.message).same_account;
+
+            setTimeout(() => {
+                other_error.value = false;
+            }, 3000);
+        }else {
+            other_error.value = true;
+            error_message.value = JSON.parse(err.message).notEnoughtMoney;
+
+            setTimeout(() => {
+                other_error.value = false;
+            }, 3000);
+        }
     }finally{
         is_fetching.value = false;
     }
@@ -88,18 +110,29 @@ onMounted(async () => {
 
                 <form @submit.prevent="submitTransaction" class="section__send__money">
                     <div class="send__money__top">
-                        <FormInput label="Сметка на получател" v-model="transaction.account_receiver_number"/>
+                        <FormInput label="Сметка на получател" 
+                            v-model="transaction.account_receiver_number"
+                            :error="errors?.account_receiver_number?.[0]"/>
 
-                        <FormInput label="Сума" v-model="transaction.amount" />
+                        <FormInput label="Сума" v-model="transaction.amount"
+                            :error="errors?.amount?.[0]" />
                     </div>
 
                     <TextareaFormInput label="Бележка" v-model="transaction.note"/>
 
-                    <SelectComponent :options="transaction_types" name="select-transaction-type" id="select-transaction-type" v-model="transaction.transaction_type_id" />
+                    <SelectComponent :options="transaction_types"
+                        name="select-transaction-type"
+                        id="select-transaction-type"
+                        v-model="transaction.transaction_type_id"
+                        :error="errors?.transaction_type_id?.[0]" />
                     
                     <Button class="submit_btn" type="submit" text="Направи транзакция" />
                 </form>
             </div>
+
+            <SuccessMessage v-if="success_message" text="Успешна транзакция." :class="{'green-bg': true}"/>
+            
+            <p v-if="other_error" class="err_message">{{ error_message }}</p>
         </div>
     </section>
 </template>
@@ -108,6 +141,15 @@ onMounted(async () => {
 .section-send-money{
     margin-block: 32px;
 
+    .err_message{
+        padding: 10px;
+        background: var(--c-red);
+        color: var(--c-gray);
+        font-size: 18px;
+        align-self: center;
+        width: fit-content;
+        border-radius: 10px;
+    }
     .submit_btn{
         width: 200px;
     }
