@@ -21,10 +21,6 @@ class CurrencySeeder extends Seeder
         ]);
 
         Currency::create([
-            'currency' => 'GBR'
-        ]);
-
-        Currency::create([
             'currency' => 'USD'
         ]);
     }

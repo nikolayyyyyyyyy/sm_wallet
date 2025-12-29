@@ -19,9 +19,5 @@ class AccountTypeSeeder extends Seeder
         AccountType::create([
             'account_type' => 'Разплащателна'
         ]);
-
-        AccountType::create([
-            'account_type' => 'Студентска'
-        ]);
     }
 }
