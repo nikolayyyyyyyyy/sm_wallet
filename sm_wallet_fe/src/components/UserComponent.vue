@@ -9,6 +9,7 @@ const props = defineProps({
         required: false
     }
 });
+import GoToArrow from './GoToArrow.vue';
 import LikeStarComponent from './LikeStarComponent.vue';
 </script>
 

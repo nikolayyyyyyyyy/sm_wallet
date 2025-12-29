@@ -87,6 +87,7 @@ onMounted(async () => {
                             <div class="content__transaction_info">
                                 <p><span>Сума по превод:</span> {{ transaction.amount }} {{ transaction.sender_account.currency.currency }}</p>
                                 <p><span>Вид на превода:</span> {{ transaction.transaction_type.transaction_type }}</p>
+                                <p><span>Основание за превод:</span> {{ transaction.note }}</p>
                             </div>
 
                             <div class="content__account__sender">
