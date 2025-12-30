@@ -84,7 +84,7 @@ onMounted(async () => {
                 <h1>Прати пари</h1>
             </div>
 
-            <div class="section__content">
+            <div v-if="user.cards.length > 0" class="section__content">
                 <div class="section__cards">
                     <label class="content__card" v-for="(card, index) in user.cards" :key="card.id" :for="'card-' + card.id">
                         <div class="section__radio-btn" :class="{ selected: transaction.account_sender_id === card.id }">
@@ -130,6 +130,8 @@ onMounted(async () => {
                 </form>
             </div>
 
+            <p v-else class="err_message">Нямате налични сметки</p>
+
             <SuccessMessage v-if="success_message" text="Успешна транзакция." :class="{'green-bg': true}"/>
             
             <p v-if="other_error" class="err_message">{{ error_message }}</p>
@@ -150,6 +152,7 @@ onMounted(async () => {
         width: fit-content;
         border-radius: 10px;
     }
+
     .submit_btn{
         width: 200px;
     }

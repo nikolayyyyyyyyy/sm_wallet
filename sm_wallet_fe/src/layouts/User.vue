@@ -81,9 +81,7 @@ const searchForUser = async () => {
             </MyCardsSection>
         </div>
 
-        <div v-if="user.cards.length == 0" class="section__no-cards base-form">
-            <p>Няма налични сметки.</p>
-        </div>
+        <p v-if="user.cards.length == 0" class="err_message">Няма налични сметки.</p>
 
         <div class="section__user-link">
             <RouterLink to="/send-money" class="user__link">
@@ -162,6 +160,16 @@ const searchForUser = async () => {
         gap: 20px;
     }
 
+    .err_message{
+        padding: 10px;
+        background: var(--c-red);
+        color: var(--c-gray);
+        font-size: 18px;
+        width: fit-content;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
     .error__message{
         font-size: 18px;
     }
@@ -192,12 +200,6 @@ const searchForUser = async () => {
 
     :deep(.form-input) {
         width: 50%;
-    }
-
-    .section__no-cards {
-        margin-block: 20px;
-        font-size: 18px;
-        color: var(--c-red);
     }
 
     .section__user-link {

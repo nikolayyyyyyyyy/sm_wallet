@@ -111,7 +111,7 @@ public function updateUserProfile(Request $request, string $id)
 
     $user->save();
 
-    return response()->json(status: 204);
+    return response()->json(status: 201);
 }
 
     public function getUser(string $id)

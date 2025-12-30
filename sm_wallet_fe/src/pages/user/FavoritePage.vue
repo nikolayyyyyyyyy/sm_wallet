@@ -50,7 +50,7 @@ onMounted(async () => {
 
                 <LoadingComponent v-if="is_loading" />
 
-                <FormErrorMessage class="empty__transactions" v-if="is_loading == false && liked_users?.length == 0" text="Не сте добавили никой още." />
+                <p v-else class="err_message">Не сте добавили никой в харесани.</p>
             </div>
         </div>
     </section>
@@ -60,16 +60,21 @@ onMounted(async () => {
 .section-favorites {
     margin-block: 32px;
 
+    .err_message{
+        padding: 10px;
+        background: var(--c-red);
+        color: var(--c-gray);
+        font-size: 18px;
+        align-self: center;
+        width: fit-content;
+        border-radius: 10px;
+    }
+
     .section__inner{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 24px;
-    }
-
-    .empty__transactions{
-        color: var(--c-red);
-        font-size: 15px;
     }
 
     .loading {
