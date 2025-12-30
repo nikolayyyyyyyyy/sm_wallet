@@ -51,7 +51,7 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow :reversed="true" nav-to="/currencies" />
 
-                <h1>Промени валута</h1>
+                <h1>Редактирай валута</h1>
             </div>
 
             <form @submit.prevent="handleUpdate" v-if="currency && !is_loading" class="section__currency base-form">

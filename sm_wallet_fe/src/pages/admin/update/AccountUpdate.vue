@@ -76,7 +76,7 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow :reversed="true" nav-to="/accounts" />
 
-                <h1>Промени сметка</h1>
+                <h1>Редактирай сметка</h1>
             </div>
 
             <form @submit.prevent="updateAccount" v-if="!is_loading && account" class="section__account base-form">

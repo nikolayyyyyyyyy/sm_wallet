@@ -55,6 +55,10 @@ onMounted(async () => {
                     </div>
 
                     <div class="section__buttons">
+                        <RouterLink :to="{name: 'clients.update', params: {id: client.id}}" class="update_link">
+                            <Button text="Промени" />
+                        </RouterLink>
+
                         <Button text="Изтрий" :delete_btn="true" @click.prevent="deleteClient(client.id)" />
                     </div>
                 </div>
@@ -68,6 +72,10 @@ onMounted(async () => {
 <style scoped lang="scss">
 .section-clients {
     margin-block: 32px;
+
+    .update_link{
+        width: 100%;
+    }
 
     .section__title {
         display: grid;

@@ -48,7 +48,7 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow nav-to="/transaction-types" :reversed="true" />
 
-                <h1>Промяна на вид транзакция</h1>
+                <h1>Редактирай вид транзакция</h1>
             </div>
 
             <form @submit.prevent="handleUpdate" v-if="!is_loading" class="section__content base-form">
