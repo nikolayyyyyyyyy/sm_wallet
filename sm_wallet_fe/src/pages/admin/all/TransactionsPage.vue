@@ -35,10 +35,10 @@ onMounted(async () => {
             <div class="section__title">
                 <GoToArrow :reversed="true" nav-to="/" />
 
-                <h1>Tранзакций</h1>
+                <h1>Tранзакции</h1>
             </div>
 
-            <div v-if="!is_loading && transactions" class="section__transactions">
+            <div v-if="!is_loading && transactions.length > 0" class="section__transactions">
                 <div v-for="transaction in transactions" class="section__transaction base-form">
                     <p>Размер на превод: {{ transaction.amount }}
                         <span class="section__curency">
@@ -64,9 +64,9 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <LoadingComponent class="loading" v-if="is_loading" />
+            <p v-if="transactions.length == 0 && !is_loading" class="err_message">Няма добавени транзакции.</p>
 
-            <FormErrorMessage v-if="!is_loading && !transactions" text="Няма намерени транзакций" />
+            <LoadingComponent class="loading" v-if="is_loading" />
         </div>
     </section>
 </template>

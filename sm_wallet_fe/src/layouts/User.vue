@@ -161,12 +161,6 @@ const searchForUser = async () => {
     }
 
     .err_message{
-        padding: 10px;
-        background: var(--c-red);
-        color: var(--c-gray);
-        font-size: 18px;
-        width: fit-content;
-        border-radius: 10px;
         margin-top: 20px;
     }
 

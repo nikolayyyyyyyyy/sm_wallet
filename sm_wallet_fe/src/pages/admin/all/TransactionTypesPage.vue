@@ -23,6 +23,7 @@ onMounted(async () => {
     }
     is_loading.value = true;
     transaction_types.value = await getData('transaction-types');
+    transaction_types.value = [];
     is_loading.value = false;
 });
 </script>
@@ -36,7 +37,7 @@ onMounted(async () => {
                 <h1>Видове транзакции</h1>
             </div>
 
-            <div v-if="is_loading == false" class="section__transaction__types">
+            <div v-if="!is_loading && transaction_types.length > 0" class="section__transaction__types">
                 <div v-for="transaction_type in transaction_types" class="section__account__type base-form">
                     <p class="section__account-title">
                         Тип на транзакция: {{ transaction_type.transaction_type }}
@@ -53,7 +54,9 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <LoadingComponent class="loading" v-else />
+            <p class="err_message" v-if="!is_loading && transaction_types.length == 0">Няма добавени типове транзакции.</p>
+
+            <LoadingComponent class="loading" v-if="is_loading" />
         </div>
     </section>
 </template>

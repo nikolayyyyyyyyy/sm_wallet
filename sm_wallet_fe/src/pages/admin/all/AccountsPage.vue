@@ -38,7 +38,7 @@ onBeforeMount(async () => {
                 <h1>Сметки</h1>
             </div>
 
-            <div v-if="is_loading == false" class="section__accounts">
+            <div v-if="!is_loading && accounts.length > 0" class="section__accounts">
                 <div v-for="account in accounts" class="section__account base-form">
                     <p>Номер на сметката: {{ account.account_number }}</p>
 
@@ -64,7 +64,9 @@ onBeforeMount(async () => {
                 </div>
             </div>
 
-            <LoadingComponent class="loading" v-else />
+            <p class="err_message" v-if="!is_loading && accounts.length == 0">Няма добавени сметки.</p>
+
+            <LoadingComponent class="loading" v-if="is_loading" />
         </div>
     </section>
 </template>

@@ -60,16 +60,6 @@ onMounted(async () => {
 .section-favorites {
     margin-block: 32px;
 
-    .err_message{
-        padding: 10px;
-        background: var(--c-red);
-        color: var(--c-gray);
-        font-size: 18px;
-        align-self: center;
-        width: fit-content;
-        border-radius: 10px;
-    }
-
     .section__inner{
         display: flex;
         flex-direction: column;

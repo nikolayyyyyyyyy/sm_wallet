@@ -143,16 +143,6 @@ onMounted(async () => {
 .section-send-money{
     margin-block: 32px;
 
-    .err_message{
-        padding: 10px;
-        background: var(--c-red);
-        color: var(--c-gray);
-        font-size: 18px;
-        align-self: center;
-        width: fit-content;
-        border-radius: 10px;
-    }
-
     .submit_btn{
         width: 200px;
     }

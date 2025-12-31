@@ -19,6 +19,16 @@
   --c-light-blue: #F0F3F9;
 }
 
+.err_message{
+    padding: 10px;
+    background: var(--c-red);
+    color: var(--c-gray);
+    font-size: 18px;
+    align-self: center;
+    width: fit-content;
+    border-radius: 10px;
+}
+
 * {
   margin: 0;
   padding: 0;
