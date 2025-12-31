@@ -12,6 +12,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 use App\Models\User;
 use App\Http\Controllers\ChatController;
+use Illuminate\Support\Facades\Storage;
 
 Route::middleware('auth:sanctum')->group(function () {
 

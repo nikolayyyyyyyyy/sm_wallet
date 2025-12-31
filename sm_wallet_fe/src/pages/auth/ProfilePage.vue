@@ -59,9 +59,9 @@ const updateUserData = async () => {
     is_fetching.value = false;
 };
 
-function handleChangeOfPhoto(event)
+function handleChangeOfPhoto(e)
 {
-    const file = event.target.files[0];
+    const file = e.target.files[0];
     file_upload.value = file;
     file_image_url.value = URL.createObjectURL(file);
 }

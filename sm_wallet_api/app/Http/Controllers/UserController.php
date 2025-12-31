@@ -83,6 +83,14 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'profile_picture' => 'nullable|image|max:2048',
             'password' => 'nullable|min:6'
+        ], [
+            'name' => 'Полето е задължително',
+            'middle_name' => 'Полето трябва да е до 20 символа',
+            'last_name' => 'Полето трябва да е до 20 символа',
+            'email.required' => 'Полето е задължително',
+            'email.unique' => 'Има запис с този имейл',
+            'role_id' => 'Полето е задължително',
+            'password' => 'Полето е задължително'
         ]);
 
         if ($validator->fails()) {
@@ -108,6 +116,12 @@ class UserController extends Controller
             $path = $request->file('profile_picture')
                 ->store('profile_pictures', 'public');
             $user->profile_photo = Storage::url($path);
+        } else {
+            if ($user->profile_photo) {
+                $oldPath = str_replace('/storage/', '', $user->profile_photo);
+                Storage::disk('public')->delete($oldPath);
+                $user->profile_photo = null;
+            }
         }
 
         if ($request->filled('password')) {

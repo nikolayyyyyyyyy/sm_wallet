@@ -7,19 +7,22 @@ import SelectComponent from '@/components/SelectComponent.vue';
 import { get } from '@/crud/get';
 import { update } from '@/crud/update';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 const props = defineProps({
     id:{
         type: String,
         required: true
     }
 });
-
+const router = useRouter();
 const user = ref();
 const { getItem } = get();
 const is_loading = ref(false);
 const is_fetching = ref(false);
 const { updateData } = update();
 const file__upload = ref();
+const profile_photo_url = ref();
+const errors = ref([]);
 
 const updateUser = async () => {
     if(is_fetching.value) return;
@@ -39,9 +42,8 @@ const updateUser = async () => {
         is_loading.value = true;
 
         await updateData(form_data, 'clients', props.id);
-        user.value = await getItem('clients', props.id);
     }catch(err){
-
+        errors.value = JSON.parse(err.message).errors;
     }finally{
         is_fetching.value = false;
         is_loading.value = false;
@@ -52,11 +54,22 @@ function handleChangeOfPhoto(event)
 {
     const file = event.target.files[0];
     file__upload.value = file;
+    profile_photo_url.value = URL.createObjectURL(file);
 }
 
+const removeImage = async () => {
+    profile_photo_url.value = null;
+    file__upload.value = null;
+};
+
 onMounted(async () => {
+    if(!localStorage.getItem('token')){
+        router.push('/login');
+        return;
+    }
     is_loading.value = true;
     user.value = await getItem('clients', props.id);
+    profile_photo_url.value = user.value.profile_photo;
     is_loading.value = false;
 });
 </script>
@@ -73,22 +86,24 @@ onMounted(async () => {
             <div v-if="!is_loading && user" class="section__user">
                 <label for="image-upload" class="image_upload">
                     <figure class="user__image image-fit">
-                        <img :src="user?.profile_photo != null ? user?.profile_photo : '/avatar.png'">
+                        <img :src="profile_photo_url ?? '/avatar.png'">
                     </figure>
 
                     <input type="file" @change="handleChangeOfPhoto" name="image-upload" id="image-upload" hidden>
+
+                    <p v-if="profile_photo_url" @click.stop.prevent="removeImage" class="exit">X</p>
                 </label>
 
                 <form @submit.prevent="updateUser" class="section__user__content">
                     <div class="content__names">
-                        <FormInput label="име" v-model="user.name" />
+                        <FormInput label="име" v-model="user.name" :error="errors?.name?.[0]"/>
 
-                        <FormInput label="презиме" v-model="user.middle_name" />
+                        <FormInput label="презиме" v-model="user.middle_name" :error="errors?.middle_name?.[0]"/>
 
-                        <FormInput label="фамилия" v-model="user.last_name" />
+                        <FormInput label="фамилия" v-model="user.last_name" :error="errors?.last_name?.[0]"/>
                     </div>
 
-                    <FormInput label="имейл" v-model="user.email" />
+                    <FormInput label="имейл" v-model="user.email" :error="errors?.email?.[0]"/>
 
                     <SelectComponent v-model="user.role_id" name="select-role"
                         id="select-role" label="Права"
@@ -107,6 +122,21 @@ onMounted(async () => {
 .section-client-update{
     margin-block: 32px;
 
+    .exit{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 5px;
+        top: 4px;
+        padding: 5px 10px;
+        color: var(--c-gray);
+        font-size: 18px;
+        background-color: var(--c-base);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
     .update__btn{
         width: 200px;
         align-self: center;
@@ -117,6 +147,7 @@ onMounted(async () => {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap:50px;
     }
 
     .content__names{
@@ -135,12 +166,13 @@ onMounted(async () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 50%;
+        width: 30%;
+        position: relative;
 
         .user__image{
-            border: 2px solid var(--c-base);
+            border: 3px solid var(--c-base);
             border-radius: 10px;
-            width: 50%;
+            width: 100%;
             aspect-ratio: 1 / 1;
         }
     }
